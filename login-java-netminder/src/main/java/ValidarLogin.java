@@ -45,16 +45,14 @@ public class ValidarLogin {
             System.out.println("Data e Hora: " + dataHoraCaptura);
 
             Double cpuUsage = systemMonitor.getCpuUsage();
-            Double ramUsage = systemMonitor.getRamUsage();
-            Double diskUsage = systemMonitor.getDiskUsage();
+            Long ramUsage = systemMonitor.getRamUsage();
+            Long diskUsage = systemMonitor.getDiskUsage();
             Double temperature = systemMonitor.getTemperature();
-            Double logUse = systemMonitor.getLog();
 
             System.out.println("CPU: " + decimalFormat.format(cpuUsage) + "%");
             System.out.println("RAM: " + decimalFormat.format(ramUsage) + "%");
             System.out.println("Disco: " + decimalFormat.format(diskUsage) + "%");
             System.out.println("Temperatura: " + decimalFormat.format(temperature) + "°C");
-            System.out.println("Logs: " + decimalFormat.format(logUse) + "%");
 
             if (cpuUsage > 80) {
                 System.out.println("Alerta: Uso da CPU acima de 80%");
@@ -68,11 +66,8 @@ public class ValidarLogin {
             if (temperature > 80) {
                 System.out.println("Alerta: Temperatura acima de 80°C");
             }
-            if (logUse > 75){
-                System.out.println("Alerta: Logs nos ponto de acesso acima de 75%");
-            }
 
-            if (cpuUsage > 80 || ramUsage > 80 || diskUsage > 80 || temperature > 80 || logUse > 75) {
+            if (cpuUsage > 80 || ramUsage > 80 || diskUsage > 80 || temperature > 80) {
                 System.out.println("ALERTA GERAL: Algum dos componentes está com uso ou temperatura elevadas (80%/75% ou 80ºC)");
             } else {
                 System.out.println("SISTEMA OPERANDO EM BOM ESTADO");
@@ -82,7 +77,7 @@ public class ValidarLogin {
             System.out.flush();
 
             System.out.println("Deseja continuar exibindo os dados do sistema? (1 para sim, 2 para sair)");
-            Integer opcao = scanner.nextInt();
+            int opcao = scanner.nextInt();
             if (opcao == 2) {
                 continuarExibindo = false;
             }
