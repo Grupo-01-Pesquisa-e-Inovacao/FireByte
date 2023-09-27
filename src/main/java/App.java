@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class LoginJava {
+public class App {
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         List<String> listaEmail = new ArrayList<>();
