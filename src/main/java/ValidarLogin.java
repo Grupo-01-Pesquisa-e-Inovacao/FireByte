@@ -1,3 +1,5 @@
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,6 +50,22 @@ public class ValidarLogin {
             Long ramUsage = systemMonitor.getRamUsage();
             Long diskUsage = systemMonitor.getDiskUsage();
             Double temperature = systemMonitor.getTemperature();
+            //DataBase
+            BDConnector conexao = new BDConnector();
+            JdbcTemplate con = conexao.getBdConection();
+
+            con.execute("""
+                CREATE TABLE IF NOT EXISTS log (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                cpuUsage DECIMAL(5, 2),
+                ramUsage DECIMAL(5, 2),
+                diskUsage DECIMAL(5, 2),
+                temperature DECIMAL(5, 2)
+                )""");
+            con.update("INSERT INTO log (cpuUsage, ramUsage, diskUsage, temperature) VALUES (?, ?, ?, ?)",
+                    cpuUsage, ramUsage, diskUsage, temperature);
+
+            System.out.println(con.queryForList("SELECT * FROM log"));
 
             System.out.println("CPU: " + decimalFormat.format(cpuUsage) + "%");
             System.out.println("RAM: " + decimalFormat.format(ramUsage) + "%");

@@ -1,3 +1,6 @@
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
