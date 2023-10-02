@@ -5,108 +5,80 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
-        List<String> listaEmail = new ArrayList<>();
-        List<String> listaSenha = new ArrayList<>();
+        ValidarLogin validarLogin = new ValidarLogin();
 
-        listaEmail.add("kevin@firebyte.com");
-        listaEmail.add("pedro@firebyte.com");
-        listaEmail.add("danilo@firebyte.com");
+        List<String> users = new ArrayList<>();
 
-        listaSenha.add("firebyte123");
-        listaSenha.add("firebyte456");
-        listaSenha.add("firebyte789");
+        System.out.println("===========================================");
+        System.out.println("Bem vindo!!!");
+        System.out.println("Este é o sistema de monitoramento FireByte!");
+        System.out.println("===========================================");
 
-        List<String> listaEmailADM = new ArrayList<>();
-        List<String> listaSenhaADM = new ArrayList<>();
+        Boolean loginSucesso = false;
 
-        listaEmailADM.add("admin@firebyte.com");
-        listaSenhaADM.add("admin123");
+        while (!loginSucesso) {
+            System.out.println("Digite seu Email:");
+            String emailUsuario = scanner.nextLine();
+            System.out.println("Digite sua Senha:");
+            String senhaUsuario = scanner.nextLine();
 
-        LoadingAnimation loadingAnimation = new LoadingAnimation();
-        ValidarLogin validar = new ValidarLogin();
-
-        boolean sairPrograma = false;
-        while (!sairPrograma) {
-            System.out.println("===========================================");
-            System.out.println("Bem vindo!!!");
-            System.out.println("Este é o sistema de monitoramento FireByte!");
-            System.out.println("===========================================");
-
-            Boolean loginSucesso = false;
-            Boolean loginADM = false;
-            Boolean isUser = false;
-
-            while (!loginSucesso && !loginADM) {
-                System.out.println("Digite seu Email:");
-                String emailUsuario = scanner.nextLine();
-                System.out.println("Digite sua Senha:");
-                String senhaUsuario = scanner.nextLine();
-
-                try {
-                    loadingAnimation.run(1000); // 1000 milissegundos (1 segundos)
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // Re-set
-                    e.printStackTrace();
-                }
-
-                String resultado = validar.emailSenha(emailUsuario, senhaUsuario, listaEmail, listaSenha);
-                if (resultado.equals("\n-Login feito com sucesso!")) {
-                    loginSucesso = true;
-                    isUser = !validar.isADM(emailUsuario, listaEmailADM);
-                    System.out.println(resultado);
-                } else if (resultado.equals("\n-Login não encontrado!")) {
-                    for (int i = 0; i < listaEmailADM.size(); i++) {
-                        if (listaEmailADM.get(i).equals(emailUsuario) && listaSenhaADM.get(i).equals(senhaUsuario)) {
-                            loginADM = true;
-                            break;
-                        }
-                    }
-                    if (!loginADM) {
-                        System.out.println("Login não encontrado. Tente novamente.");
-                    }
-                }
-            }
-
-            if (loginADM) {
-                System.out.println("===========================================");
-                System.out.println("Bem vindo, ADM!");
-                System.out.println("Menu ADM:");
-                System.out.println("1. Criar novo usuário");
-                System.out.println("2. Exibir Dados do Sistema");
-                System.out.println("3. Sair");
-                System.out.println("4. Criar novo usuário ADM");
-                Integer opcao = scanner.nextInt();
-                scanner.nextLine();
-
-                if (opcao == 1 || opcao == 4) {
-                    System.out.println("Digite o email do novo usuário:");
-                    String novoEmail = scanner.nextLine();
-                    System.out.println("Digite a senha do novo usuário:");
-                    String novaSenha = scanner.nextLine();
-
-                    validar.criarNovoUsuario(novoEmail, novaSenha, listaEmail, listaSenha, opcao, listaEmailADM, listaSenhaADM);
-
-                    System.out.println("Novo usuário criado com sucesso!");
-                } else if (opcao == 2) {
-                    validar.exibirDadosSistema(scanner);
-                } else if (opcao == 3) {
-                    sairPrograma = true;
-                }
-            } else if (isUser) {
-                System.out.println("===========================================");
-                System.out.println("Bem vindo!");
-                System.out.println("Menu Usuário:");
-                System.out.println("1. Exibir Dados do Sistema");
-                System.out.println("2. Sair");
-                Integer opcao = scanner.nextInt();
-                scanner.nextLine();
-
-                if (opcao == 1) {
-                    validar.exibirDadosSistema(scanner);
-                } else if (opcao == 2) {
-                    sairPrograma = true;
-                }
+            Boolean resultado = validar.emailSenha(emailUsuario, senhaUsuario);
+            if (resultado) {
+                loginSucesso = true;
+                System.out.println("Login realizado com sucesso!");
+            } else {
+                System.out.println("Login não encontrado. Tente novamente.");
             }
         }
+
+        // Pegar a empresa do usuário.
+        // Procurar pelo idCPU/endMECRede em todas as tabelas da empresa do usuário.
+        // Se houver uma tabela com o idCPU/endMECRede igual dessa máquina (e ela já estiver configurada), já insere os dados nessa tabela.
+        // Se não houver uma tabela com o idCPU/endMECRede dessa máquina, cria uma nova tabela de dispositivo e pede ao usuário configurar na dashboard.
+
+        //Config na dash:
+        //Título
+        //Descrição
+        //Componentes a serem monitorados
+        //Métrica de aviso individual de cada componente
+
+
+        SystemMonitor systemMonitor = new SystemMonitor();
+        DecimalFormat decimalFormat = new DecimalFormat("0.00"); //Refatorar para o que aprendemos em aula
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); //Refatorar para o que aprendemos em aula
+        do {
+            String dataHoraCaptura = dateFormat.format(new Date());
+
+            // Verificar quais dados são monitorados para essa máquina no Banco
+
+            // Double cpuUsage = systemMonitor.getCpuUsage();
+            // Long ramUsage = systemMonitor.getRamUsage();
+            // Long diskUsage = systemMonitor.getDiskUsage();
+            // Double temperature = systemMonitor.getTemperature();
+
+
+            // Criar a tabela Log se ela não existe ainda
+
+            // criarTabela(componentesNecessários)
+            // con.execute("""
+            //     CREATE TABLE log (
+            //     id INT PRIMARY KEY AUTO_INCREMENT,
+            //     ramUsage DECIMAL(5, 2),
+            //     diskUsage DECIMAL(5, 2),
+            //     temperature DECIMAL(5, 2),
+            //     logDateTime DATETIME
+            //     )""");
+
+
+            // Inserir na tabela log os dados que precisam ser monitoriados no Banco
+            // con.update("INSERT INTO log ( ramUsage, diskUsage, temperature, logDateTime) VALUES ( ?, ?, ?, ?)",
+            //         ramUsage, diskUsage, temperature, LocalDateTime.now());
+
+            System.out.println("Data e Hora: " + dataHoraCaptura);
+            System.out.println("CPU: " + decimalFormat.format(cpuUsage) + "%");
+            System.out.println("RAM: " + decimalFormat.format(ramUsage) + "%");
+            System.out.println("Disco: " + decimalFormat.format(diskUsage) + "%");
+            System.out.println("Temperatura: " + decimalFormat.format(temperature) + "°C");
+        }while (true)
     }
 }

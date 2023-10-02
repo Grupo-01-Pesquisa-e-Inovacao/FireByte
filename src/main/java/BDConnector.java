@@ -18,7 +18,7 @@ public class BDConnector {
         dataSource.setUrl("jdbc:mysql://localhost:3306/Firebyte");
 
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("root"); //Colocar em um .env
 
         bdConection = new JdbcTemplate(dataSource);
     }
