@@ -2,15 +2,22 @@ import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
+import com.github.britooo.looca.api.group.rede.Rede;
 import com.github.britooo.looca.api.group.temperatura.Temperatura;
 
 public class SystemMonitor {
 
     Looca looca = new Looca();
+    Rede rede = looca.getRede();
     Processador processador = looca.getProcessador();
     Memoria memoria = looca.getMemoria();
     Temperatura temperatura = looca.getTemperatura();
     DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
+
+    public String getMACAddress() {
+        // Retorna o endereço MAC da placa de rede, que atua como um identificador único da máquina
+        return rede.getGrupoDeInterfaces().getInterfaces().get(0).getEnderecoMac();
+    }
 
     public double getCpuUsage() {
         // Retorna um valor entre 0 e 100% representando o uso da CPU

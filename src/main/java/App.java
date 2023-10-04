@@ -1,84 +1,109 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         ValidarLogin validarLogin = new ValidarLogin();
-
-        List<String> users = new ArrayList<>();
+        SystemMonitor systemMonitor = new SystemMonitor();
 
         System.out.println("===========================================");
         System.out.println("Bem vindo!!!");
         System.out.println("Este é o sistema de monitoramento FireByte!");
         System.out.println("===========================================");
 
+        // LOGIN
+        User user = null;
         Boolean loginSucesso = false;
-
         while (!loginSucesso) {
             System.out.println("Digite seu Email:");
             String emailUsuario = scanner.nextLine();
             System.out.println("Digite sua Senha:");
             String senhaUsuario = scanner.nextLine();
 
-            Boolean resultado = validar.emailSenha(emailUsuario, senhaUsuario);
-            if (resultado) {
+            user = validarLogin.getUser(emailUsuario, senhaUsuario);
+            if (user != null) {
                 loginSucesso = true;
                 System.out.println("Login realizado com sucesso!");
             } else {
                 System.out.println("Login não encontrado. Tente novamente.");
             }
         }
+        System.out.println(user);
 
-        // Pegar a empresa do usuário.
-        // Procurar pelo idCPU/endMECRede em todas as tabelas da empresa do usuário.
-        // Se houver uma tabela com o idCPU/endMECRede igual dessa máquina (e ela já estiver configurada), já insere os dados nessa tabela.
-        // Se não houver uma tabela com o idCPU/endMECRede dessa máquina, cria uma nova tabela de dispositivo e pede ao usuário configurar na dashboard.
+        //PEGAR MÁQUINA
+        //Validar se o componente já está cadastrado
+        ComponenteDeRede componente = validarLogin.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
+        String textoNovoComponente = "Vimos que está em um novo componente,\n Você terá que configurar esse novo componente em nossa dashboard {link}";
+        while (componente == null){
+            confirmacaoUsuario(scanner, textoNovoComponente);
+            componente = validarLogin.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
+        }
+        System.out.println(componente);
 
-        //Config na dash:
-        //Título
-        //Descrição
-        //Componentes a serem monitorados
-        //Métrica de aviso individual de cada componente
+        //Validar se o componente já está configurado
+        boolean componenteConfigurado = componente.hasCPU != null && componente.hasDisk != null && componente.hasRAM != null && componente.hasNetwork != null && componente.hasTemperature != null;
+        String textoConfigurarComponente = "Parece que você não configurou seu componente ainda!\nVá para nossa dashboard e configure seu componente.";
+        while (!componenteConfigurado){
+            confirmacaoUsuario(scanner, textoConfigurarComponente);
+            componente = validarLogin.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
+            componenteConfigurado = componente.hasCPU != null && componente.hasDisk != null && componente.hasRAM != null && componente.hasNetwork != null && componente.hasTemperature != null;
+        }
+        System.out.println(componente);
 
+        //MONITORAMENTO
+//        DateTimeFormatter formatadorDeDataHora = DateTimeFormatter.ofPattern("dd/MMMM/yyyy hh:mm:ss:ms");
+//        do {
+//            String dataHoraCaptura = formatadorDeDataHora.format(LocalDateTime.now());
+//
+//            Double cpuUsage = null;
+//            if (componente.hasCPU) {
+//                cpuUsage = systemMonitor.getCpuUsage();
+//            }
+//            Long diskUsage = null;
+//            if (componente.hasDisk) {
+//                diskUsage = systemMonitor.getDiskUsage();
+//            }
+//            Long ramUsage = null;
+//            if (componente.hasRAM) {
+//                ramUsage = systemMonitor.getRamUsage();
+//            }
+//            if (componente.hasNetwork) {
+//                //TODO
+//            }
+//            Double temperature = null;
+//            if (componente.hasTemperature) {
+//                temperature = systemMonitor.getTemperature();
+//            }
+//
+//            // Inserir na tabela log os dados que precisam ser monitoriados no Banco
+//            System.out.println("Data e Hora: " + dataHoraCaptura);
+//            if (cpuUsage != null) {
+//                System.out.println(String.format("CPU: %.2f%%", cpuUsage));
+//            }
+//            if (diskUsage != null) {
+//                System.out.println(String.format("Disco: %d%%", diskUsage));
+//            }
+//            if (ramUsage != null) {
+//                System.out.println(String.format("RAM: %d%%", ramUsage));
+//            }
+//            //TODO Network
+//            if (temperature != null) {
+//                System.out.println(String.format("Temperatura: %.2f%%", temperature));
+//            }
+//
+//             con.update("INSERT INTO captura (ramUsage, diskUsage, temperature, logDateTime) VALUES ( ?, ?, ?, ?)",
+//                     ramUsage, diskUsage, temperature, LocalDateTime.now()); //todo modularidade
+//
+//            Thread.sleep(componente.delayInMs);
+//        } while (true);
+    }
 
-        SystemMonitor systemMonitor = new SystemMonitor();
-        DecimalFormat decimalFormat = new DecimalFormat("0.00"); //Refatorar para o que aprendemos em aula
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); //Refatorar para o que aprendemos em aula
-        do {
-            String dataHoraCaptura = dateFormat.format(new Date());
-
-            // Verificar quais dados são monitorados para essa máquina no Banco
-
-            // Double cpuUsage = systemMonitor.getCpuUsage();
-            // Long ramUsage = systemMonitor.getRamUsage();
-            // Long diskUsage = systemMonitor.getDiskUsage();
-            // Double temperature = systemMonitor.getTemperature();
-
-
-            // Criar a tabela Log se ela não existe ainda
-
-            // criarTabela(componentesNecessários)
-            // con.execute("""
-            //     CREATE TABLE log (
-            //     id INT PRIMARY KEY AUTO_INCREMENT,
-            //     ramUsage DECIMAL(5, 2),
-            //     diskUsage DECIMAL(5, 2),
-            //     temperature DECIMAL(5, 2),
-            //     logDateTime DATETIME
-            //     )""");
-
-
-            // Inserir na tabela log os dados que precisam ser monitoriados no Banco
-            // con.update("INSERT INTO log ( ramUsage, diskUsage, temperature, logDateTime) VALUES ( ?, ?, ?, ?)",
-            //         ramUsage, diskUsage, temperature, LocalDateTime.now());
-
-            System.out.println("Data e Hora: " + dataHoraCaptura);
-            System.out.println("CPU: " + decimalFormat.format(cpuUsage) + "%");
-            System.out.println("RAM: " + decimalFormat.format(ramUsage) + "%");
-            System.out.println("Disco: " + decimalFormat.format(diskUsage) + "%");
-            System.out.println("Temperatura: " + decimalFormat.format(temperature) + "°C");
-        }while (true)
+    static void confirmacaoUsuario(Scanner scanner, String texto){
+        int escolha;
+        do{
+            System.out.println(texto);
+            System.out.println("\nAssim que estiver tudo pronto, digite 1:");
+            escolha = scanner.nextInt();
+        }while (escolha != 1);
     }
 }

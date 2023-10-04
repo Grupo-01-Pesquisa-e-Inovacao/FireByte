@@ -15,10 +15,10 @@ public class BDConnector {
         //MYSQL -> jdbc:mysql://localhost:3306/mydb
         //SQL SERVER -> jdbc:sqlserver://localhost:1433;database=mydb
         // H2- > jdbc:h2:file:./mydb
-        dataSource.setUrl("jdbc:mysql://localhost:3306/Firebyte");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/bdnetminders");
 
         dataSource.setUsername("root");
-        dataSource.setPassword("root"); //Colocar em um .env
+        dataSource.setPassword("1234"); //Colocar em um .env
 
         bdConection = new JdbcTemplate(dataSource);
     }
