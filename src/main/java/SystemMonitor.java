@@ -2,6 +2,7 @@ import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
+import com.github.britooo.looca.api.group.sistema.Sistema;
 import com.github.britooo.looca.api.group.temperatura.Temperatura;
 
 public class SystemMonitor {
@@ -11,9 +12,25 @@ public class SystemMonitor {
     Memoria memoria = looca.getMemoria();
     Temperatura temperatura = looca.getTemperatura();
     DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
+    Sistema sistema = looca.getSistema();
+
+    public String getOperationSystem() {
+        // Retorna o sistema operacional.
+        return sistema.getSistemaOperacional();
+    }
+
+    public String manufacturer(){
+        // Retorna o nome da fabricante do sistema, por exemplo, no caso do Windows (Microsoft).
+        return sistema.getFabricante();
+    }
+
+    public Integer architecture(){
+        // Retorna o número de bits do sistema operacional (se é 32 ou 64).
+        return sistema.getArquitetura();
+    }
 
     public double getCpuUsage() {
-        // Retorna um valor entre 0 e 100% representando o uso da CPU
+//         Retorna um valor entre 0 e 100% representando o uso da CPU
         return processador.getUso();
     }
 

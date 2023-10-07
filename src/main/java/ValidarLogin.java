@@ -64,7 +64,10 @@ public class ValidarLogin {
             String dataHoraCaptura = dateFormat.format(new Date());
             System.out.println("Data e Hora: " + dataHoraCaptura);
 
-//            Double cpuUsage = systemMonitor.getCpuUsage();
+            Double cpuUsage = systemMonitor.getCpuUsage();
+            String operationSystem = systemMonitor.getOperationSystem();
+            String manufacture = systemMonitor.manufacturer();
+            Integer architecture = systemMonitor.architecture();
             Long ramUsage = systemMonitor.getRamUsage();
             Long diskUsage = systemMonitor.getDiskUsage();
             Double temperature = systemMonitor.getTemperature();
@@ -83,14 +86,17 @@ public class ValidarLogin {
 
             System.out.println(con.queryForList("SELECT * FROM log"));
 
-//            System.out.println("CPU: " + decimalFormat.format(cpuUsage) + "%");
+            System.out.println("CPU: " + decimalFormat.format(cpuUsage) + "%");
+            System.out.println("Sistema Operacional: " + operationSystem);
+            System.out.println("Fabricante: " + manufacture);
+            System.out.println("Aquitetura " + architecture + " Bits");
             System.out.println("RAM: " + decimalFormat.format(ramUsage) + "%");
             System.out.println("Disco: " + decimalFormat.format(diskUsage) + "%");
             System.out.println("Temperatura: " + decimalFormat.format(temperature) + "°C");
 
-//            if (cpuUsage > 80) {
-//                System.out.println("Alerta: Uso da CPU acima de 80%");
-//            }
+            if (cpuUsage > 80) {
+                System.out.println("Alerta: Uso da CPU acima de 80%");
+            }
             if (ramUsage > 80) {
                 System.out.println("Alerta: Uso da RAM acima de 80%");
             }
@@ -101,8 +107,8 @@ public class ValidarLogin {
                 System.out.println("Alerta: Temperatura acima de 80°C");
             }
 
-// cpuUsage > 80 ||
-            if ( ramUsage > 80 || diskUsage > 80 || temperature > 80) {
+
+            if ( cpuUsage > 80 ||  ramUsage > 80 || diskUsage > 80 || temperature > 80) {
                 System.out.println("ALERTA GERAL: Algum dos componentes está com uso ou temperatura elevadas (80%/75% ou 80ºC)");
             } else {
                 System.out.println("SISTEMA OPERANDO EM BOM ESTADO");

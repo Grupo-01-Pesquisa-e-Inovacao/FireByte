@@ -92,6 +92,7 @@ public class App {
                 } else if (opcao == 3) {
                     sairPrograma = true;
                 }
+
             } else if (isUser) {
                 System.out.println("===========================================");
                 System.out.println("Bem vindo!");
