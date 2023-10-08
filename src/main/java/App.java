@@ -23,7 +23,7 @@ public class App {
 
         // LOGIN
         User user = null;
-        Boolean loginSucesso = false;
+        boolean loginSucesso = false;
         while (!loginSucesso) {
             System.out.println("Digite seu Email:");
             String emailUsuario = scanner.nextLine();
