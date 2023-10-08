@@ -1,10 +1,12 @@
+import entities.Dispositivo;
+import entities.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-public class ValidarLogin {
+public class BDInterface {
     //DataBase
     BDConnector conexao = new BDConnector();
     JdbcTemplate con = conexao.getBdConection();
@@ -15,7 +17,7 @@ public class ValidarLogin {
             User user = con.queryForObject(
                     "SELECT u.*, e.nomeFantasia AS empresaNome " +
                             "FROM usuario u " +
-                            "INNER JOIN empresa e ON u.fkEmpresa = e.idEmpresa " +
+                            "INNER JOIN empresa e ON u.fkEmpresa = e.id " +
                             "WHERE u.email = ? AND u.senha = ?",
                     new BeanPropertyRowMapper<>(User.class),
                     emailUsuario,
@@ -28,17 +30,22 @@ public class ValidarLogin {
         }
     }
 
-    ComponenteDeRede getComponente(String endMAC, Integer idEmpresa) {
+    Dispositivo getComponente(String endMAC, Integer idEmpresa) {
         try {
             //Retorna o componente com o MAC provido
-            ComponenteDeRede componente = con.queryForObject("SELECT * FROM componenteDeRede WHERE enderecoMAC = ?",
-                    new BeanPropertyRowMapper<>(ComponenteDeRede.class),
+            Dispositivo componente = con.queryForObject("SELECT * FROM dispositivo WHERE endMAC = ?",
+                    new BeanPropertyRowMapper<>(Dispositivo.class),
                     endMAC
             );
             return componente;
         } catch (EmptyResultDataAccessException e) {
-            con.update("INSERT INTO componenteDeRede (enderecoMAC, fkEmpresa) VALUES (?, ?)", endMAC, idEmpresa);
+            con.update("INSERT INTO dispositivo (endMAC, fkEmpresa) VALUES (?, ?)", endMAC, idEmpresa);
             return null;
         }
+    }
+
+    void insertLog(LocalDateTime dataHora, Double uso, String componente, Integer idDispositivo){
+        con.update("INSERT INTO log (dataHora, uso, componenteMonitorado, fkdispositivo) VALUES (?, ?, ?, ?)",
+                dataHora, uso, componente, idDispositivo);
     }
 }

@@ -24,14 +24,14 @@ public class SystemMonitor {
         return processador.getUso();
     }
 
-    public Long getRamUsage() {
+    public Double getRamUsage() {
         // Retorna um valor entre 0 e 100% representando o uso da RAM
-        return (memoria.getEmUso() * 100) / memoria.getTotal();
+        return (double) ((memoria.getEmUso() * 100) / memoria.getTotal());
     }
 
-    public Long getDiskUsage() {
+    public Double getDiskUsage() {
         // Retorna um valor entre 0 e 100% representando o uso do disco
-        return (grupoDeDiscos.getVolumes().get(0).getDisponivel() * 100) / grupoDeDiscos.getVolumes().get(0).getTotal();
+        return (double) ((grupoDeDiscos.getVolumes().get(0).getDisponivel() * 100) / grupoDeDiscos.getVolumes().get(0).getTotal());
     }
 
     public double getTemperature() {

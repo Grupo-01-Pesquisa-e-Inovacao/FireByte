@@ -1,3 +1,5 @@
+package entities;
+
 public class User {
     private Integer idUsuario;
     private Integer fkEmpresa;
@@ -56,7 +58,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "entities.User{" +
                 "id=" + idUsuario +
                 ", idEmpresa=" + fkEmpresa +
                 ", nome='" + nome + '\'' +

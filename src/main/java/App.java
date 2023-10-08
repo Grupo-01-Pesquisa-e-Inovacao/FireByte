@@ -1,15 +1,25 @@
+import entities.Dispositivo;
+import entities.User;
+
+import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
-        ValidarLogin validarLogin = new ValidarLogin();
+        BDInterface bdInterface = new BDInterface();
         SystemMonitor systemMonitor = new SystemMonitor();
 
         System.out.println("===========================================");
         System.out.println("Bem vindo!!!");
         System.out.println("Este é o sistema de monitoramento FireByte!");
         System.out.println("===========================================");
+
+        //Desabilitar Warnings do Oshi
+        Logger oshiLogger = Logger.getLogger("oshi.util.platform.windows.PerfCounterWildcardQuery");
+        oshiLogger.setLevel(Level.SEVERE);
 
         // LOGIN
         User user = null;
@@ -20,7 +30,7 @@ public class App {
             System.out.println("Digite sua Senha:");
             String senhaUsuario = scanner.nextLine();
 
-            user = validarLogin.getUser(emailUsuario, senhaUsuario);
+            user = bdInterface.getUser(emailUsuario, senhaUsuario);
             if (user != null) {
                 loginSucesso = true;
                 System.out.println("Login realizado com sucesso!");
@@ -28,82 +38,61 @@ public class App {
                 System.out.println("Login não encontrado. Tente novamente.");
             }
         }
-        System.out.println(user);
 
         //PEGAR MÁQUINA
-        //Validar se o componente já está cadastrado
-        ComponenteDeRede componente = validarLogin.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
-        String textoNovoComponente = "Vimos que está em um novo componente,\n Você terá que configurar esse novo componente em nossa dashboard {link}";
-        while (componente == null){
-            confirmacaoUsuario(scanner, textoNovoComponente);
-            componente = validarLogin.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
+        //Validar se o dispositivo já está cadastrado (se não está cria um novo)
+        Dispositivo dispositivo = bdInterface.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
+        //Validar se o componente está configurado
+        while (!isComponentConfigured(dispositivo)) {
+            confirmacaoUsuario(scanner, "Vimos que está em um novo dispositivo,\n Você terá que configurar esse novo dispositivo em nossa dashboard {link}");
+            dispositivo = bdInterface.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
         }
-        System.out.println(componente);
-
-        //Validar se o componente já está configurado
-        boolean componenteConfigurado = componente.hasCPU != null && componente.hasDisk != null && componente.hasRAM != null && componente.hasNetwork != null && componente.hasTemperature != null;
-        String textoConfigurarComponente = "Parece que você não configurou seu componente ainda!\nVá para nossa dashboard e configure seu componente.";
-        while (!componenteConfigurado){
-            confirmacaoUsuario(scanner, textoConfigurarComponente);
-            componente = validarLogin.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
-            componenteConfigurado = componente.hasCPU != null && componente.hasDisk != null && componente.hasRAM != null && componente.hasNetwork != null && componente.hasTemperature != null;
-        }
-        System.out.println(componente);
 
         //MONITORAMENTO
-//        DateTimeFormatter formatadorDeDataHora = DateTimeFormatter.ofPattern("dd/MMMM/yyyy hh:mm:ss:ms");
-//        do {
-//            String dataHoraCaptura = formatadorDeDataHora.format(LocalDateTime.now());
-//
-//            Double cpuUsage = null;
-//            if (componente.hasCPU) {
-//                cpuUsage = systemMonitor.getCpuUsage();
-//            }
-//            Long diskUsage = null;
-//            if (componente.hasDisk) {
-//                diskUsage = systemMonitor.getDiskUsage();
-//            }
-//            Long ramUsage = null;
-//            if (componente.hasRAM) {
-//                ramUsage = systemMonitor.getRamUsage();
-//            }
-//            if (componente.hasNetwork) {
-//                //TODO
-//            }
-//            Double temperature = null;
-//            if (componente.hasTemperature) {
-//                temperature = systemMonitor.getTemperature();
-//            }
-//
-//            // Inserir na tabela log os dados que precisam ser monitoriados no Banco
-//            System.out.println("Data e Hora: " + dataHoraCaptura);
-//            if (cpuUsage != null) {
-//                System.out.println(String.format("CPU: %.2f%%", cpuUsage));
-//            }
-//            if (diskUsage != null) {
-//                System.out.println(String.format("Disco: %d%%", diskUsage));
-//            }
-//            if (ramUsage != null) {
-//                System.out.println(String.format("RAM: %d%%", ramUsage));
-//            }
-//            //TODO Network
-//            if (temperature != null) {
-//                System.out.println(String.format("Temperatura: %.2f%%", temperature));
-//            }
-//
-//             con.update("INSERT INTO captura (ramUsage, diskUsage, temperature, logDateTime) VALUES ( ?, ?, ?, ?)",
-//                     ramUsage, diskUsage, temperature, LocalDateTime.now()); //todo modularidade
-//
-//            Thread.sleep(componente.delayInMs);
-//        } while (true);
+        while (true) {
+            LocalDateTime dataHoraCaptura = LocalDateTime.now();
+
+            if (dispositivo.getHasCPU() == 1) {
+                logAndPrint("CPU", systemMonitor.getCpuUsage(), dataHoraCaptura, dispositivo.getId());
+            }
+
+            if (dispositivo.getHasDisk() == 1) {
+                logAndPrint("DISK", systemMonitor.getDiskUsage(), dataHoraCaptura, dispositivo.getId());
+            }
+
+            if (dispositivo.getHasRAM() == 1) {
+                logAndPrint("RAM", systemMonitor.getRamUsage(), dataHoraCaptura, dispositivo.getId());
+            }
+
+            if (dispositivo.getHasNetwork() == 1) {
+                // TODO
+            }
+
+            logAndPrint("TEMP", systemMonitor.getTemperature(), dataHoraCaptura, dispositivo.getId());
+
+            Thread.sleep(dispositivo.getDelayInMs());
+        }
     }
 
-    static void confirmacaoUsuario(Scanner scanner, String texto){
+    static boolean isComponentConfigured(Dispositivo dispositivo) {
+        return dispositivo.getHasCPU() != null &&
+                dispositivo.getHasDisk() != null &&
+                dispositivo.getHasRAM() != null &&
+                dispositivo.getHasNetwork() != null;
+    }
+
+    static void confirmacaoUsuario(Scanner scanner, String texto) {
         int escolha;
-        do{
+        do {
             System.out.println(texto);
             System.out.println("\nAssim que estiver tudo pronto, digite 1:");
             escolha = scanner.nextInt();
-        }while (escolha != 1);
+        } while (escolha != 1);
+    }
+
+    static void logAndPrint(String componente, Double usage, LocalDateTime dataHora, Integer dispositivoId) {
+        BDInterface bdInterface = new BDInterface();
+        bdInterface.insertLog(dataHora, usage, componente, dispositivoId);
+        System.out.println(String.format("%s: Log de %s (%.2f) inserido com sucesso!",dataHora, componente, usage));
     }
 }
