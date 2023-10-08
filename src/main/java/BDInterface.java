@@ -40,7 +40,7 @@ public class BDInterface {
             return componente;
         } catch (EmptyResultDataAccessException e) {
             con.update("INSERT INTO dispositivo (endMAC, fkEmpresa) VALUES (?, ?)", endMAC, idEmpresa);
-            return null;
+            return getComponente(endMAC, idEmpresa);
         }
     }
 

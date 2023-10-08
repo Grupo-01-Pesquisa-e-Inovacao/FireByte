@@ -93,6 +93,6 @@ public class App {
     static void logAndPrint(String componente, Double usage, LocalDateTime dataHora, Integer dispositivoId) {
         BDInterface bdInterface = new BDInterface();
         bdInterface.insertLog(dataHora, usage, componente, dispositivoId);
-        System.out.println(String.format("%s: Log de %s (%.2f) inserido com sucesso!",dataHora, componente, usage));
+        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, componente, usage));
     }
 }

@@ -1,6 +1,7 @@
 -- -----------------------------------------------------
 -- Banco bdNetminders
 -- -----------------------------------------------------
+drop database bdNetminders;
 CREATE DATABASE IF NOT EXISTS bdNetminders;
 USE bdNetminders;
 
@@ -9,7 +10,7 @@ USE bdNetminders;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS empresa
 (
-    id           INT          NOT NULL,
+    id           INT          NOT NULL AUTO_INCREMENT,
     nomeFantasia VARCHAR(100) NULL,
     razaoSocial  VARCHAR(100) NULL,
     CNPJ         VARCHAR(18)  NULL,
@@ -17,7 +18,7 @@ CREATE TABLE IF NOT EXISTS empresa
     telefone     VARCHAR(20)  NULL,
     emailEmpresa VARCHAR(255) NULL,
     PRIMARY KEY (id)
-)
+    )
     ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -25,7 +26,7 @@ CREATE TABLE IF NOT EXISTS empresa
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS endereco
 (
-    id          INT         NOT NULL,
+    id          INT         NOT NULL AUTO_INCREMENT,
     fkEmpresa   INT         NOT NULL,
     isFilial    TINYINT,
     CEP         VARCHAR(10) NULL,
@@ -34,11 +35,11 @@ CREATE TABLE IF NOT EXISTS endereco
     PRIMARY KEY (id, fkEmpresa),
     INDEX fk_usuario_empresa_idx (fkEmpresa ASC),
     CONSTRAINT fk_endereco_empresa
-        FOREIGN KEY (fkEmpresa)
-            REFERENCES empresa (id)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
-)
+    FOREIGN KEY (fkEmpresa)
+    REFERENCES empresa (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    )
     ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -46,29 +47,27 @@ CREATE TABLE IF NOT EXISTS endereco
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS usuario
 (
-    id           INT          NOT NULL,
-    fkEmpresa    INT          NOT NULL,
-    nome  VARCHAR(45),
-    email VARCHAR(255) NOT NULL,
-    senha        VARCHAR(45)  NOT NULL,
-    isAdmin      TINYINT      NOT NULL,
+    id        INT          NOT NULL AUTO_INCREMENT,
+    fkEmpresa INT          NOT NULL,
+    nome      VARCHAR(45),
+    email     VARCHAR(255) NOT NULL,
+    senha     VARCHAR(45)  NOT NULL,
+    isAdmin   TINYINT      NOT NULL,
     PRIMARY KEY (id, fkEmpresa),
     CONSTRAINT fk_usuario_empresa
-        FOREIGN KEY (fkEmpresa)
-            REFERENCES empresa (id)
-)
+    FOREIGN KEY (fkEmpresa)
+    REFERENCES empresa (id)
+    )
     ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Tabela `dispositivo`
 -- -----------------------------------------------------
-drop table log;
-drop table dispositivo;
 CREATE TABLE IF NOT EXISTS dispositivo
 (
     id         INT      NOT NULL AUTO_INCREMENT,
     endMAC     CHAR(17) NOT NULL,
-    fkEmpresa INT NOT NULL,
+    fkEmpresa  INT      NOT NULL,
     titulo     VARCHAR(45),
     descricao  VARCHAR(255),
     isOn       TINYINT,
@@ -76,12 +75,12 @@ CREATE TABLE IF NOT EXISTS dispositivo
     hasRAM     TINYINT,
     hasDisk    TINYINT,
     hasNetwork TINYINT,
-    delayInMs INT,
+    delayInMs  INT,
     CONSTRAINT fkEmpresa
-        FOREIGN KEY (fkEmpresa)
-            REFERENCES empresa (id),
+    FOREIGN KEY (fkEmpresa)
+    REFERENCES empresa (id),
     PRIMARY KEY (id)
-)
+    )
     ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -90,13 +89,21 @@ CREATE TABLE IF NOT EXISTS dispositivo
 CREATE TABLE IF NOT EXISTS log
 (
     id                   INT AUTO_INCREMENT,
-    fkDispositivo        INT      NOT NULL,
-    dataHora             DATETIME NOT NULL,
-    uso                  SMALLINT NOT NULL,
-    componenteMonitorado VARCHAR(7)  NOT NULL,
+    fkDispositivo        INT        NOT NULL,
+    dataHora             DATETIME   NOT NULL,
+    uso                  SMALLINT   NOT NULL,
+    componenteMonitorado VARCHAR(7) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fkDispositivo
-        FOREIGN KEY (fkDispositivo)
-            REFERENCES dispositivo (id)
-)
+    FOREIGN KEY (fkDispositivo)
+    REFERENCES dispositivo (id)
+    )
     ENGINE = InnoDB;
+
+insert into empresa (nomeFantasia, razaoSocial, CNPJ, CEP, telefone, emailEmpresa)
+values ('Netminder', 'NetminderLtda.', '9289232', '231231', '123123123', 'netminder@netminder.com');
+insert into usuario (fkEmpresa, nome, email, senha, isAdmin)
+values (1, 'Danilo', 'danilo@netminder.com', '123', true);
+select * from dispositivo;
+update dispositivo set hasCPU=true, hasDisk=true, hasNetwork=false, hasRAM=true, delayInMs=10000 where id=1;
+select * from log;
