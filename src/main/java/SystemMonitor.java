@@ -3,6 +3,7 @@ import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
 import com.github.britooo.looca.api.group.rede.Rede;
+import com.github.britooo.looca.api.group.rede.RedeInterface;
 import com.github.britooo.looca.api.group.sistema.Sistema;
 import com.github.britooo.looca.api.group.temperatura.Temperatura;
 
@@ -37,7 +38,7 @@ public class SystemMonitor {
     }
 
     public double getCpuUsage() {
-//         Retorna um valor entre 0 e 100% representando o uso da CPU
+        // Retorna um valor entre 0 e 100% representando o uso da CPU
         return processador.getUso();
     }
 
@@ -54,5 +55,11 @@ public class SystemMonitor {
     public double getTemperature() {
         // Retorna um valor entre 0 e 100% representando a temperatura em graus Celsius
         return temperatura.getTemperatura();
+    }
+
+    public double getRedeUsage(){
+        // Retorna um valor entre 0 e 100% representando o package loss da rede
+        RedeInterface componenteRede = rede.getGrupoDeInterfaces().getInterfaces().get(0);
+        return componenteRede.getPacotesEnviados() - componenteRede.getPacotesRecebidos();
     }
 }

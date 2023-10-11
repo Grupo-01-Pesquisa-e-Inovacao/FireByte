@@ -65,7 +65,7 @@ public class App {
             }
 
             if (dispositivo.getHasNetwork() == 1) {
-                // TODO
+                logAndPrint("REDE", systemMonitor.getRedeUsage(), dataHoraCaptura, dispositivo.getId());
             }
 
             logAndPrint("TEMP", systemMonitor.getTemperature(), dataHoraCaptura, dispositivo.getId());
