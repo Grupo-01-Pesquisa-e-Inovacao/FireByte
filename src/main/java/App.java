@@ -1,3 +1,4 @@
+import entities.ComponentesDispositivos;
 import entities.Dispositivo;
 import entities.User;
 
@@ -39,60 +40,46 @@ public class App {
             }
         }
 
-        //PEGAR MÁQUINA
-        //Validar se o dispositivo já está cadastrado (se não está cria um novo)
-        Dispositivo dispositivo = bdInterface.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
-        //Validar se o componente está configurado
-        while (!isComponentConfigured(dispositivo)) {
-            confirmacaoUsuario(scanner, "Vimos que está em um novo dispositivo,\n Você terá que configurar esse novo dispositivo em nossa dashboard {link}");
-            dispositivo = bdInterface.getComponente(systemMonitor.getMACAddress(), user.getFkEmpresa());
+        //PEGAR DISPOSITIVO
+        Dispositivo dispositivo = bdInterface.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa()); //Validar se o dispositivo já está cadastrado (se não está cria um novo)
+        //PEGAR COMPONENTES DO DISPOSITIVO
+        ComponentesDispositivos CPU = BDInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos DISK = BDInterface.returnComponenteDispositivo("DISK", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos RAM = BDInterface.returnComponenteDispositivo("RAM", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos REDE = BDInterface.returnComponenteDispositivo("REDE", dispositivo.getEnderecoMAC());
+        //VERIFICAR CONFIGURAÇÃO
+        if(CPU == null && DISK == null && RAM == null && REDE == null || dispositivo.getTaxaAtualizacao() == null){
+            System.out.println("Vimos que seu dispositivo ainda não está configurado,\n você pode configura-lo em nossa Dashboard!");
+            System.exit(1);
         }
 
         //MONITORAMENTO
         while (true) {
             LocalDateTime dataHoraCaptura = LocalDateTime.now();
 
-            if (dispositivo.getHasCPU() == 1) {
-                logAndPrint("CPU", systemMonitor.getCpuUsage(), dataHoraCaptura, dispositivo.getId());
+            if (CPU != null) {
+                logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
             }
 
-            if (dispositivo.getHasDisk() == 1) {
-                logAndPrint("DISK", systemMonitor.getDiskUsage(), dataHoraCaptura, dispositivo.getId());
+            if (DISK != null) {
+                logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
             }
 
-            if (dispositivo.getHasRAM() == 1) {
-                logAndPrint("RAM", systemMonitor.getRamUsage(), dataHoraCaptura, dispositivo.getId());
+            if (RAM != null) {
+                logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
             }
 
-            if (dispositivo.getHasNetwork() == 1) {
-                logAndPrint("REDE", systemMonitor.getRedeUsage(), dataHoraCaptura, dispositivo.getId());
+            if (REDE != null){
+                logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
             }
 
-            logAndPrint("TEMP", systemMonitor.getTemperature(), dataHoraCaptura, dispositivo.getId());
-
-            Thread.sleep(dispositivo.getDelayInMs());
+            Thread.sleep(dispositivo.getTaxaAtualizacao());
         }
     }
 
-    static boolean isComponentConfigured(Dispositivo dispositivo) {
-        return dispositivo.getHasCPU() != null &&
-                dispositivo.getHasDisk() != null &&
-                dispositivo.getHasRAM() != null &&
-                dispositivo.getHasNetwork() != null;
-    }
-
-    static void confirmacaoUsuario(Scanner scanner, String texto) {
-        int escolha;
-        do {
-            System.out.println(texto);
-            System.out.println("\nAssim que estiver tudo pronto, digite 1:");
-            escolha = scanner.nextInt();
-        } while (escolha != 1);
-    }
-
-    static void logAndPrint(String componente, Double usage, LocalDateTime dataHora, Integer dispositivoId) {
+    static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
         BDInterface bdInterface = new BDInterface();
-        bdInterface.insertLog(dataHora, usage, componente, dispositivoId);
-        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, componente, usage));
+        bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
+        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
     }
 }

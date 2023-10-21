@@ -1,19 +1,19 @@
 package entities;
 
 public class User {
-    private Integer idUsuario;
+    private Integer id;
     private Integer fkEmpresa;
+    private Integer fkNivelAcesso;
     private String nome;
     private String email;
     private String senha;
-    private Integer isAdmin;
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getFkEmpresa() {
@@ -22,6 +22,14 @@ public class User {
 
     public void setFkEmpresa(Integer fkEmpresa) {
         this.fkEmpresa = fkEmpresa;
+    }
+
+    public Integer getFkNivelAcesso() {
+        return fkNivelAcesso;
+    }
+
+    public void setFkNivelAcesso(Integer fkNivelAcesso) {
+        this.fkNivelAcesso = fkNivelAcesso;
     }
 
     public String getNome() {
@@ -48,23 +56,23 @@ public class User {
         this.senha = senha;
     }
 
-    public Integer getADM() {
-        return isAdmin;
-    }
-
-    public void setADM(Integer ADM) {
-        isAdmin = ADM;
-    }
-
     @Override
     public String toString() {
-        return "entities.User{" +
-                "id=" + idUsuario +
-                ", idEmpresa=" + fkEmpresa +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", senha='" + senha + '\'' +
-                ", isADM=" + isAdmin +
-                '}';
+        return """
+                    User:
+                                        id= %d
+                        ,             fkEmpresa= %d
+                        ,             fkNivelAcesso= %d
+                        ,             nome= %s
+                        ,             email= %s
+                        ,             senha= %s
+                """.formatted(
+                id
+                , fkEmpresa
+                , fkNivelAcesso
+                , nome
+                , email
+                , senha
+        );
     }
 }

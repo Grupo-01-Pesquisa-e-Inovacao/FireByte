@@ -6,21 +6,8 @@ public class Dispositivo {
     private Integer fkEmpresa;
     private String titulo;
     private String descricao;
-    private Integer hasCPU;
-    private Integer hasDisk;
-    private Integer hasRAM;
-    private Integer hasNetwork;
-    private Integer alertCPU;
-    private Integer criticalCPU;
-    private Integer alertDisk;
-    private Integer criticalDisk;
-    private Integer alertRAM;
-    private Integer criticalRAM;
-    private Integer alertNetwork;
-    private Integer criticalNetwork;
-    private Integer alertTemperature;
-    private Integer criticalTemperature;
-    private Integer delayInMs;
+    private Boolean ativo;
+    private Integer taxaAtualizacao;
 
     public Integer getId() {
         return id;
@@ -46,69 +33,57 @@ public class Dispositivo {
         this.fkEmpresa = fkEmpresa;
     }
 
-    public Integer getHasCPU() {
-        return hasCPU;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setHasCPU(Integer hasCPU) {
-        this.hasCPU = hasCPU;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public Integer getHasDisk() {
-        return hasDisk;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setHasDisk(Integer hasDisk) {
-        this.hasDisk = hasDisk;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public Integer getHasRAM() {
-        return hasRAM;
+    public Boolean getAtivo() {
+        return ativo;
     }
 
-    public void setHasRAM(Integer hasRAM) {
-        this.hasRAM = hasRAM;
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
-    public Integer getHasNetwork() {
-        return hasNetwork;
+    public Integer getTaxaAtualizacao() {
+        return taxaAtualizacao;
     }
 
-    public void setHasNetwork(Integer hasNetwork) {
-        this.hasNetwork = hasNetwork;
-    }
-
-    public Integer getDelayInMs() {
-        return delayInMs;
-    }
-
-    public void setDelayInMs(Integer delayInMs) {
-        this.delayInMs = delayInMs;
+    public void setTaxaAtualizacao(Integer taxaAtualizacao) {
+        this.taxaAtualizacao = taxaAtualizacao;
     }
 
     @Override
     public String toString() {
-        return "entities.ComponenteDeRede{" +
-                "id=" + id +
-                ", enderecoMAC='" + enderecoMAC + '\'' +
-                ", Empresa=" + fkEmpresa +
-                ", titulo='" + titulo + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", hasCPU=" + hasCPU +
-                ", hasDisk=" + hasDisk +
-                ", hasRAM=" + hasRAM +
-                ", hasNetwork=" + hasNetwork +
-                ", alertCPU=" + alertCPU +
-                ", criticalCPU=" + criticalCPU +
-                ", alertDisk=" + alertDisk +
-                ", criticalDisk=" + criticalDisk +
-                ", alertRAM=" + alertRAM +
-                ", criticalRAM=" + criticalRAM +
-                ", alertNetwork=" + alertNetwork +
-                ", criticalNetwork=" + criticalNetwork +
-                ", alertTemperature=" + alertTemperature +
-                ", criticalTemperature=" + criticalTemperature +
-                ", delayInMs=" + delayInMs +
-                '}';
+        return """
+                    Dispositivo:
+                                        id= %d
+                        ,             enderecoMAC= %s
+                        ,             fkEmpresa= %d
+                        ,             titulo= %s
+                        ,             descricao= %s
+                        ,             ativo= %b
+                        ,             taxaAtualizacao= %d
+                """.formatted(
+                id
+                , enderecoMAC
+                , fkEmpresa
+                , titulo
+                , descricao
+                , ativo
+                , taxaAtualizacao
+        );
     }
 }

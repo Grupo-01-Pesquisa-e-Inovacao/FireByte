@@ -15,7 +15,7 @@ public class BDConnector {
         //MYSQL -> jdbc:mysql://localhost:3306/mydb
         //SQL SERVER -> jdbc:sqlserver://localhost:1433;database=mydb
         // H2- > jdbc:h2:file:./mydb
-        dataSource.setUrl("jdbc:mysql://localhost:3306/bdNetminders");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/firebyteDB");
 
         dataSource.setUsername("root");
         dataSource.setPassword("1234"); //Colocar em um .env

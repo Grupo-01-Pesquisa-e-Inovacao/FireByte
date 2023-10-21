@@ -1,4 +1,5 @@
 import entities.Dispositivo;
+import entities.ComponentesDispositivos;
 import entities.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -8,17 +9,14 @@ import java.time.LocalDateTime;
 
 public class BDInterface {
     //DataBase
-    BDConnector conexao = new BDConnector();
-    JdbcTemplate con = conexao.getBdConection();
+    static BDConnector conexao = new BDConnector();
+    static JdbcTemplate con = conexao.getBdConection();
 
     User getUser(String emailUsuario, String senhaUsuario) {
         try{
             //Retorna o usuário e a empresa dele
             User user = con.queryForObject(
-                    "SELECT u.*, e.nomeFantasia AS empresaNome " +
-                            "FROM usuario u " +
-                            "INNER JOIN empresa e ON u.fkEmpresa = e.id " +
-                            "WHERE u.email = ? AND u.senha = ?",
+                    "SELECT * FROM Usuario WHERE email = ? AND senha = ?",
                     new BeanPropertyRowMapper<>(User.class),
                     emailUsuario,
                     senhaUsuario
@@ -30,22 +28,38 @@ public class BDInterface {
         }
     }
 
-    Dispositivo getComponente(String endMAC, Integer idEmpresa) {
+    Dispositivo getDispositivo(String endMAC, Integer idEmpresa) {
         try {
-            //Retorna o componente com o MAC provido
-            Dispositivo componente = con.queryForObject("SELECT * FROM dispositivo WHERE endMAC = ?",
+            //Retorna o dispositivo com o MAC provido
+            Dispositivo dispositivo = con.queryForObject("SELECT * FROM dispositivo WHERE enderecoMAC = ?",
                     new BeanPropertyRowMapper<>(Dispositivo.class),
                     endMAC
             );
-            return componente;
+            return dispositivo;
         } catch (EmptyResultDataAccessException e) {
-            con.update("INSERT INTO dispositivo (endMAC, fkEmpresa) VALUES (?, ?)", endMAC, idEmpresa);
-            return getComponente(endMAC, idEmpresa);
+            con.update("INSERT INTO dispositivo (enderecoMAC, fkEmpresa) VALUES (?, ?)", endMAC, idEmpresa);
+            return getDispositivo(endMAC, idEmpresa);
         }
     }
 
-    void insertLog(LocalDateTime dataHora, Double uso, String componente, Integer idDispositivo){
-        con.update("INSERT INTO log (dataHora, uso, componenteMonitorado, fkdispositivo) VALUES (?, ?, ?, ?)",
-                dataHora, uso, componente, idDispositivo);
+    static ComponentesDispositivos returnComponenteDispositivo(String nameComponente, String endMAC){
+        try{
+            ComponentesDispositivos componentesDispositivos = con.queryForObject(
+                    "SELECT cd.id AS id, tc.id AS fkTipoCompoenente, d.id AS fkDispositivo FROM dispositivo d " +
+                            "INNER JOIN componentesDispositivos cd ON d.id = cd.fkDispositivo " +
+                            "INNER JOIN tipoComponente tc ON cd.fkTipoComponente = tc.id " +
+                            "WHERE tc.nome = ? AND d.enderecoMAC = ?",
+                    new BeanPropertyRowMapper<>(ComponentesDispositivos.class),
+                    nameComponente, endMAC
+            );
+            return componentesDispositivos;
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    void insertLog(Integer fkcomponenteDispositivo, LocalDateTime dataHora, Double captura){
+        con.update("INSERT INTO log (fkcomponenteDispositivo, dataHora, captura) VALUES (?, ?, ?)",
+                fkcomponenteDispositivo, dataHora, captura);
     }
 }
