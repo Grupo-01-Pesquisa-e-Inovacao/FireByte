@@ -62,4 +62,9 @@ public class BDInterface {
         con.update("INSERT INTO log (fkcomponenteDispositivo, dataHora, captura) VALUES (?, ?, ?)",
                 fkcomponenteDispositivo, dataHora, captura);
     }
+
+    void insertLog(Integer fkcomponenteDispositivo, LocalDateTime dataHora, Integer captura){
+        con.update("INSERT INTO log (fkcomponenteDispositivo, dataHora, captura) VALUES (?, ?, ?)",
+                fkcomponenteDispositivo, dataHora, captura);
+    }
 }

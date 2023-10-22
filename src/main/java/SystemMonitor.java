@@ -1,11 +1,15 @@
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
+import com.github.britooo.looca.api.group.dispositivos.DispositivoUsb;
+import com.github.britooo.looca.api.group.dispositivos.DispositivosUsbGrupo;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
 import com.github.britooo.looca.api.group.rede.Rede;
 import com.github.britooo.looca.api.group.rede.RedeInterface;
 import com.github.britooo.looca.api.group.sistema.Sistema;
 import com.github.britooo.looca.api.group.temperatura.Temperatura;
+
+import java.util.List;
 
 public class SystemMonitor {
 
@@ -15,6 +19,9 @@ public class SystemMonitor {
     Memoria memoria = looca.getMemoria();
     Temperatura temperatura = looca.getTemperatura();
     DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
+    List<DispositivoUsb> grupoDeDispositivosUsb = looca.getDispositivosUsbGrupo().getDispositivosUsbConectados();
+
+    Integer quantidadeDispositivosUsbTotal = looca.getDispositivosUsbGrupo().getTotalDispositvosUsb();
     Sistema sistema = looca.getSistema();
 
     public String getOperationSystem() {
@@ -61,5 +68,18 @@ public class SystemMonitor {
         // Retorna um valor entre 0 e 100% representando o package loss da rede
         RedeInterface componenteRede = rede.getGrupoDeInterfaces().getInterfaces().get(0);
         return componenteRede.getPacotesEnviados() - componenteRede.getPacotesRecebidos();
+    }
+
+    public List<DispositivoUsb> getGrupoDeDispositivosUsb() {
+        //
+        return grupoDeDispositivosUsb;
+    }
+
+    public void setGrupoDeDispositivosUsb(List<DispositivoUsb> grupoDeDispositivosUsb) {
+        this.grupoDeDispositivosUsb = grupoDeDispositivosUsb;
+    }
+
+    public Integer getQuantidadeDispositivosUsbTotal() {
+        return quantidadeDispositivosUsbTotal;
     }
 }

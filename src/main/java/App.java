@@ -47,6 +47,8 @@ public class App {
         ComponentesDispositivos DISK = BDInterface.returnComponenteDispositivo("DISK", dispositivo.getEnderecoMAC());
         ComponentesDispositivos RAM = BDInterface.returnComponenteDispositivo("RAM", dispositivo.getEnderecoMAC());
         ComponentesDispositivos REDE = BDInterface.returnComponenteDispositivo("REDE", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos USBDISPONIVEIS = BDInterface.returnComponenteDispositivo("USBDISPONIVEIS", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos USBCONECTADOS = BDInterface.returnComponenteDispositivo("USBCONECTADOS", dispositivo.getEnderecoMAC());
         //VERIFICAR CONFIGURAÇÃO
         if(CPU == null && DISK == null && RAM == null && REDE == null || dispositivo.getTaxaAtualizacao() == null){
             System.out.println("Vimos que seu dispositivo ainda não está configurado,\n você pode configura-lo em nossa Dashboard!");
@@ -72,12 +74,23 @@ public class App {
             if (REDE != null){
                 logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
             }
+            if (USBCONECTADOS != null){
+                logAndPrint(USBCONECTADOS.getId(), systemMonitor.grupoDeDispositivosUsb.size(), dataHoraCaptura);
+            }
+            if (USBDISPONIVEIS != null){
+                logAndPrint(USBDISPONIVEIS.getId(), systemMonitor.quantidadeDispositivosUsbTotal - systemMonitor.grupoDeDispositivosUsb.size(), dataHoraCaptura);
+            }
 
             Thread.sleep(dispositivo.getTaxaAtualizacao());
         }
     }
 
     static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
+        BDInterface bdInterface = new BDInterface();
+        bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
+        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
+    }
+    static void logAndPrint(Integer fkcomponenteDispositivo, Integer captura, LocalDateTime dataHora) {
         BDInterface bdInterface = new BDInterface();
         bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
         System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
