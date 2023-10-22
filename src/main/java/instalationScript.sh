@@ -1,13 +1,17 @@
 #!/bin/bash
 
 #Update System
-sudo apt update
-sudo apt upgrade
+sudo apt update -y
+sudo apt upgrade -y
 
 #Java
 java -version
 if [ $? != 0 ];
-	then sudo apt install openjdk-17-jre
+	then sudo apt install openjdk-17-jre -y
+fi
+mvn -v
+if [ $? != 0 ];
+	then sudo apt install maven -y
 fi
 
 #Repository
