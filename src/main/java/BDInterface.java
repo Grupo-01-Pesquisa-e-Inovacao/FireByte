@@ -16,7 +16,7 @@ public class BDInterface {
         try{
             //Retorna o usuário e a empresa dele
             User user = con.queryForObject(
-                    "SELECT * FROM Usuario WHERE email = ? AND senha = ?",
+                    "SELECT * FROM usuario WHERE email = ? AND senha = ?",
                     new BeanPropertyRowMapper<>(User.class),
                     emailUsuario,
                     senhaUsuario
