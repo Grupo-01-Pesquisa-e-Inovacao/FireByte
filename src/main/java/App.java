@@ -4,10 +4,13 @@ import entities.User;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class App {
+    private static final AtomicBoolean isPaused = new AtomicBoolean(false);
+
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         BDInterface bdInterface = new BDInterface();
@@ -41,39 +44,57 @@ public class App {
         }
 
         //PEGAR DISPOSITIVO
-        Dispositivo dispositivo = bdInterface.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa()); //Validar se o dispositivo já está cadastrado (se não está cria um novo)
+        Dispositivo dispositivo = bdInterface.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa());
         //PEGAR COMPONENTES DO DISPOSITIVO
         ComponentesDispositivos CPU = BDInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
         ComponentesDispositivos DISK = BDInterface.returnComponenteDispositivo("DISK", dispositivo.getEnderecoMAC());
         ComponentesDispositivos RAM = BDInterface.returnComponenteDispositivo("RAM", dispositivo.getEnderecoMAC());
         ComponentesDispositivos REDE = BDInterface.returnComponenteDispositivo("REDE", dispositivo.getEnderecoMAC());
+
         //VERIFICAR CONFIGURAÇÃO
         if(CPU == null && DISK == null && RAM == null && REDE == null || dispositivo.getTaxaAtualizacao() == null){
             System.out.println("Vimos que seu dispositivo ainda não está configurado,\n você pode configura-lo em nossa Dashboard!");
             System.exit(1);
         }
 
+        // Iniciar thread para monitorar entrada do usuário
+        new Thread(() -> {
+            while (true) {
+                System.out.println("Digite 'p' para pausar ou 'r' para retomar:");
+                char input = scanner.next().charAt(0);
+                if (input == 'p') {
+                    isPaused.set(true);
+                    System.out.println("Pausado.");
+                } else if (input == 'r') {
+                    isPaused.set(false);
+                    System.out.println("Retomado.");
+                }
+            }
+        }).start();
+
         //MONITORAMENTO
         while (true) {
-            LocalDateTime dataHoraCaptura = LocalDateTime.now();
+            if (!isPaused.get()) {
+                LocalDateTime dataHoraCaptura = LocalDateTime.now();
 
-            if (CPU != null) {
-                logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
+                if (CPU != null) {
+                    logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
+                }
+
+                if (DISK != null) {
+                    logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
+                }
+
+                if (RAM != null) {
+                    logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
+                }
+
+                if (REDE != null){
+                    logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                }
+
+                Thread.sleep(dispositivo.getTaxaAtualizacao());
             }
-
-            if (DISK != null) {
-                logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
-            }
-
-            if (RAM != null) {
-                logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
-            }
-
-            if (REDE != null){
-                logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
-            }
-
-            Thread.sleep(dispositivo.getTaxaAtualizacao());
         }
     }
 
