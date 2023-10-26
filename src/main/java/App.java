@@ -90,10 +90,10 @@ public class App {
                 PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
             }
 
-            if (REDE != null){
+            /*if (REDE != null){
                 logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
                 PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
-            }
+            }*/
 
             Thread.sleep(dispositivo.getTaxaAtualizacao());
         }
