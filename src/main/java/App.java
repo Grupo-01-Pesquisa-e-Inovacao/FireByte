@@ -1,14 +1,14 @@
 import entities.ComponentesDispositivos;
 import entities.Dispositivo;
 import entities.User;
-
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class App {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
         BDInterface bdInterface = new BDInterface();
         SystemMonitor systemMonitor = new SystemMonitor();
@@ -43,12 +43,18 @@ public class App {
         //PEGAR DISPOSITIVO
         Dispositivo dispositivo = bdInterface.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa()); //Validar se o dispositivo já está cadastrado (se não está cria um novo)
         //PEGAR COMPONENTES DO DISPOSITIVO
-        ComponentesDispositivos CPU = BDInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
+//        ComponentesDispositivos CPU = BDInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
         ComponentesDispositivos DISK = BDInterface.returnComponenteDispositivo("DISK", dispositivo.getEnderecoMAC());
         ComponentesDispositivos RAM = BDInterface.returnComponenteDispositivo("RAM", dispositivo.getEnderecoMAC());
         ComponentesDispositivos REDE = BDInterface.returnComponenteDispositivo("REDE", dispositivo.getEnderecoMAC());
-        //VERIFICAR CONFIGURAÇÃO
-        if(CPU == null && DISK == null && RAM == null && REDE == null || dispositivo.getTaxaAtualizacao() == null){
+
+        System.out.println(dispositivo);
+        System.out.println(DISK);
+        System.out.println(RAM);
+        System.out.println(REDE);
+
+        //VERIFICAR CONFIGURAÇÃO CPU == null &&
+        if( DISK == null && RAM == null && REDE == null || dispositivo.getTaxaAtualizacao() == null){
             System.out.println("Vimos que seu dispositivo ainda não está configurado,\n você pode configura-lo em nossa Dashboard!");
             System.exit(1);
         }
@@ -57,29 +63,54 @@ public class App {
         while (true) {
             LocalDateTime dataHoraCaptura = LocalDateTime.now();
 
-            if (CPU != null) {
-                logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
-            }
+//            if (CPU != null) {
+//                logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
+//                PrintArchiveLog(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
+//            }
 
             if (DISK != null) {
                 logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
+                PrintArchiveLog(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
             }
 
             if (RAM != null) {
                 logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
+                PrintArchiveLog(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
             }
 
             if (REDE != null){
                 logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
             }
 
             Thread.sleep(dispositivo.getTaxaAtualizacao());
         }
     }
 
-    static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
+    static void PrintArchiveLog(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) throws FileNotFoundException {
+        // Nome do arquivo de saída
+        String nomeArquivo = "log.txt";
+
+        // Cria um objeto PrintStream para escrever no arquivo
+        PrintStream gravador = new PrintStream(new FileOutputStream(nomeArquivo, true));
+
+        // Redireciona a saída padrão (System.out) para o arquivo
+        System.setOut(gravador);
+
+        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
+
+        // Mantém a saída padrão (System.out) no console
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+
+        // Fecha o gravador (FIM GRAVAÇÃO)
+        gravador.close();
+    }
+
+    static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) throws FileNotFoundException {
+
         BDInterface bdInterface = new BDInterface();
         bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
+
         System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
     }
 }

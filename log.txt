@@ -1,0 +1,138 @@
+2023-10-22T22:12:48.738591800: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:15:55.922424500: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:15:57.702616: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:15:59.323525600: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:01.014430400: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:02.946885300: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:04.653458800: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:06.361119500: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:08.349054700: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:10.017948900: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:42.607860100: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:44.530054600: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:46.436477700: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:48.546352700: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:50.448733800: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:52.434853700: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:54.494531800: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:56.456899: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:16:58.581847: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:17:00.455896400: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:17:02.696034600: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:17:04.981543400: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:03: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:05: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:07: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:09: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:12: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:13: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:15: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:17: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:19: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:21: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:23: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:24: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:26: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:28: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:30: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:32: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:34: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:36: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:22:37: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:36: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:37: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:39: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:41: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:43: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:45: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:46: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:48: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:50: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:51: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:53: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:55: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:56: Log de 9 (0%) inserido com sucesso!
+2023-10-22 22:31:58: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:19.674925300: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:22.070579700: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:24.943296400: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:28.439837400: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:30.170435200: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:32.221577700: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:34.124487400: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:36.196353400: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:37.990676300: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:39.697707300: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:41.457269800: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:43.139376300: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:45.396087200: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:47.469431900: Log de 9 (0%) inserido com sucesso!
+2023-10-22T22:49:49.128117800: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:17.528012400: Log de 7 (91%) inserido com sucesso!
+2023-10-22T23:01:17.528012400: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:19.380437600: Log de 7 (91%) inserido com sucesso!
+2023-10-22T23:01:19.380437600: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:21.093553300: Log de 7 (92%) inserido com sucesso!
+2023-10-22T23:01:21.093553300: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:22.868434200: Log de 7 (92%) inserido com sucesso!
+2023-10-22T23:01:22.868434200: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:25.095548700: Log de 7 (92%) inserido com sucesso!
+2023-10-22T23:01:25.095548700: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:26.972705400: Log de 7 (92%) inserido com sucesso!
+2023-10-22T23:01:26.972705400: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:28.626474700: Log de 7 (92%) inserido com sucesso!
+2023-10-22T23:01:28.626474700: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:30.308297: Log de 7 (92%) inserido com sucesso!
+2023-10-22T23:01:30.308297: Log de 9 (0%) inserido com sucesso!
+2023-10-22T23:01:32.327661600: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:00:30.444844800: Log de 7 (94%) inserido com sucesso!
+2023-10-25T17:00:30.444844800: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:32.235519700: Log de 7 (94%) inserido com sucesso!
+2023-10-25T17:00:32.235519700: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:33.941135400: Log de 7 (94%) inserido com sucesso!
+2023-10-25T17:00:33.941135400: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:35.595473800: Log de 7 (94%) inserido com sucesso!
+2023-10-25T17:00:35.595473800: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:37.202695700: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:00:37.202695700: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:38.756411800: Log de 7 (94%) inserido com sucesso!
+2023-10-25T17:00:38.756411800: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:40.419074800: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:00:40.419074800: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:42.015528300: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:00:42.015528300: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:43.649267800: Log de 7 (94%) inserido com sucesso!
+2023-10-25T17:00:43.649267800: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:45.403936300: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:00:45.403936300: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:00:47.045703100: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:09:50.188877600: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:09:50.188877600: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:09:51.854731: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:09:51.854731: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:09:53.475619100: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:09:53.475619100: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:09:55.089033300: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:09:55.089033300: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:09:56.914062300: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:09:56.914062300: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:09:58.547763700: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:09:58.547763700: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:00.187660900: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:10:00.187660900: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:01.879019600: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:10:01.879019600: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:03.675091900: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:10:03.675091900: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:05.354222300: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:10:05.354222300: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:07.007721300: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:10:07.007721300: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:08.626210700: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:10:08.626210700: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:10.311036200: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:10:10.311036200: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:11.871601600: Log de 7 (93%) inserido com sucesso!
+2023-10-25T17:10:11.871601600: Log de 9 (0%) inserido com sucesso!
+2023-10-25T17:10:13.551171600: Log de 7 (92%) inserido com sucesso!
+2023-10-25T17:10:13.551171600: Log de 9 (0%) inserido com sucesso!
