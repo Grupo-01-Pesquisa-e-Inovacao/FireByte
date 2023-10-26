@@ -16,7 +16,7 @@ public class DotEnv {
     private void load() {
         try {
             String workingDir = System.getProperty("user.dir");
-            String envFilePath = workingDir + File.separator + "/src/main/java/.env";
+            String envFilePath = workingDir + File.separator + ".env";
             BufferedReader reader = new BufferedReader(new FileReader(envFilePath));
             String line;
             while ((line = reader.readLine()) != null) {
