@@ -77,23 +77,23 @@ public class App {
 
             if (CPU != null) {
                 logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
-                PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                PrintArchiveLog(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
             }
 
             if (DISK != null) {
                 logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
-                PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                PrintArchiveLog(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
             }
 
             if (RAM != null) {
                 logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
-                PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                PrintArchiveLog(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
             }
 
-            /*if (REDE != null){
+            if (REDE != null){
                 logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
                 PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
-            }*/
+            }
 
             Thread.sleep(dispositivo.getTaxaAtualizacao());
         }
