@@ -121,7 +121,7 @@ public class App {
                         "</html>")
                 .buildEmail();
         Mailer mailer = MailerBuilder
-                .withSMTPServer("SMTP.office365.com", 587, dotEnv.get("2FA_EMAIL"), dotEnv.get("2FA_PASSWORD"))
+                .withSMTPServer("SMTP.office365.com", 587, dotEnv.get("danilo.pedrazzi@sptech.school"), dotEnv.get("#Gf54497114848"))
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                 .buildMailer();
         mailer.sendMail(email);

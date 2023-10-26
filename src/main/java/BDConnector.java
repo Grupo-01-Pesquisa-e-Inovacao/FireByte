@@ -19,8 +19,8 @@ public class BDConnector {
         // H2- > jdbc:h2:file:./mydb
         dataSource.setUrl("jdbc:mysql://75.101.254.216:3306/firebyteDB");
 
-        dataSource.setUsername(dotEnv.get("DB_USER"));
-        dataSource.setPassword(dotEnv.get("DB_PASSWORD"));
+        dataSource.setUsername(dotEnv.get("firebyte"));
+        dataSource.setPassword(dotEnv.get("1234"));
 
         bdConection = new JdbcTemplate(dataSource);
     }
