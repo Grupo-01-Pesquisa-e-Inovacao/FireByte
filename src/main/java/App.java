@@ -101,7 +101,6 @@ public class App {
 
     //2FA
     static void sendAuthEmail(String clientEmail, int authCode){
-        DotEnv dotEnv = new DotEnv();
         Email email = EmailBuilder.startingBlank()
                 .from("Netminder", "danilo.pedrazzi@sptech.school")
                 .to("Client", clientEmail)
@@ -121,7 +120,7 @@ public class App {
                         "</html>")
                 .buildEmail();
         Mailer mailer = MailerBuilder
-                .withSMTPServer("SMTP.office365.com", 587, dotEnv.get("danilo.pedrazzi@sptech.school"), dotEnv.get("#Gf54497114848"))
+                .withSMTPServer("SMTP.office365.com", 587, "danilo.pedrazzi@sptech.school", "#Gf54497114848")
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                 .buildMailer();
         mailer.sendMail(email);
