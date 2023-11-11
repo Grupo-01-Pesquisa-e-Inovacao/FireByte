@@ -120,7 +120,7 @@ public class App {
                         "</html>")
                 .buildEmail();
         Mailer mailer = MailerBuilder
-                .withSMTPServer("SMTP.office365.com", 587, "danilo.pedrazzi@sptech.school", "#Gf54497114848")
+                .withSMTPServer("SMTP.office365.com", 587, "NetminderFirebyte@hotmail.com", "Netminder123@")
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                 .buildMailer();
         mailer.sendMail(email);
