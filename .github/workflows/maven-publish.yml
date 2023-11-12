@@ -29,5 +29,8 @@ jobs:
     - name: Build with Maven
       run: mvn assembly:single
 
-    - name: Move JAR to Root
-      run: mv target/login-java-netminder-1.1.jar firebyte.jar
+    - name: Upload JAR as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: login-java-netminder-1.1
+        path: target/login-java-netminder-1.1.jar
