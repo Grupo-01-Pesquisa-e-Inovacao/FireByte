@@ -45,8 +45,11 @@ jobs:
         path: target/firebyte.jar
 
     - name: Deploy
-      uses: actions/deploy-releases@v1
+      uses: softprops/action-gh-release@v1
       with:
-        api-key: ${{ secrets.GITHUB_TOKEN }}
-        file: target/firebyte.jar
-        release: ${{ steps.create_release.outputs.id }}
+        files: ${{ steps.upload-artifact.outputs.artifact-path }}
+        tag_name: ${{ github.sha }}
+        release_name: ${{ github.sha }}
+        body: |
+          Release
+        token: ${{ secrets.GITHUB_TOKEN }}
