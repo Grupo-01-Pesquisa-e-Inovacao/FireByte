@@ -33,4 +33,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: login-java-netminder-1.1
-        path: target/login-java-netminder-1.1.jar
+        path: firebyte.jar
