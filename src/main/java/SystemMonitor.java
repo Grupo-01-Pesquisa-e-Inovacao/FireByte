@@ -61,5 +61,6 @@ public class SystemMonitor {
         // Retorna um valor entre 0 e 100% representando o package loss da rede
         RedeInterface componenteRede = rede.getGrupoDeInterfaces().getInterfaces().get(0);
         return componenteRede.getPacotesEnviados() - componenteRede.getPacotesRecebidos();
+        //TODO converter isso pra %
     }
 }

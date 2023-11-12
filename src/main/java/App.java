@@ -17,8 +17,8 @@ public class App {
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
-        BDInterface productionDatabase = new BDInterface(System.getenv("localhost:3306"), System.getenv("firebyte"), System.getenv("1234"));
-        BDInterface localDatabase = new BDInterface(System.getenv("localhost:3306"), System.getenv("firebyte"), System.getenv("1234"));
+        BDInterface productionDatabase = new BDInterface("localhost:3306", "firebyte", "1234");
+        BDInterface localDatabase = null;
         SystemMonitor systemMonitor = new SystemMonitor();
 
         System.out.println("===========================================");
@@ -80,21 +80,33 @@ public class App {
             if (CPU != null) {
                 logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura, localDatabase, productionDatabase);
                 PrintArchiveLog(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
+                if(systemMonitor.getCpuUsage() > 80){ //TODO pegar o valor dos parâmetros
+                    SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua CPU está em %.2f%% de uso!", systemMonitor.getCpuUsage()));
+                }
             }
 
             if (DISK != null) {
                 logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura, localDatabase, productionDatabase);
                 PrintArchiveLog(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
+                if(systemMonitor.getDiskUsage() > 80){ //TODO pegar o valor dos parâmetros
+                    SlackIntegration.publishMessage("C065CP21H0T", String.format("Seu DISCO está em %.2f%% de uso!", systemMonitor.getDiskUsage()));
+                }
             }
 
             if (RAM != null) {
                 logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura, localDatabase, productionDatabase);
                 PrintArchiveLog(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
+                if(systemMonitor.getRamUsage() > 80){ //TODO pegar o valor dos parâmetros
+                    SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua RAM está em %.2f%% de uso!", systemMonitor.getRamUsage()));
+                }
             }
 
             if (REDE != null){
                 logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura, localDatabase, productionDatabase);
                 PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                if(systemMonitor.getRedeUsage() > 80){ //TODO pegar o valor dos parâmetros
+                    SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua REDE está em %.2f%% de uso!", systemMonitor.getRedeUsage()));
+                }
             }
 
             Thread.sleep(dispositivo.getTaxaAtualizacao());
@@ -104,7 +116,7 @@ public class App {
     //2FA
     static void sendAuthEmail(String clientEmail, int authCode){
         Email email = EmailBuilder.startingBlank()
-                .from("Netminder", "danilo.pedrazzi@sptech.school")
+                .from("Netminder", "NetminderFirebyte@hotmail.com")
                 .to("Client", clientEmail)
                 .withSubject("Código de autenticação Firebyte")
                 .withHTMLText("<html> " +
