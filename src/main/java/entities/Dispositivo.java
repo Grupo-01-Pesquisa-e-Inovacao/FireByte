@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 public class Dispositivo {
     private Integer id;
     private String enderecoMAC;
@@ -8,6 +10,7 @@ public class Dispositivo {
     private String descricao;
     private Boolean ativo;
     private Integer taxaAtualizacao;
+    private List<Log> logs;
 
     public Integer getId() {
         return id;

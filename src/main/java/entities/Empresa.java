@@ -1,11 +1,14 @@
 package entities;
 
+import java.util.List;
+
 public class Empresa {
     private String nomeFantasia;
     private String razaoSocial;
     private String CNPJ;
     private String telefone;
     private String email;
+    private List<Dispositivo> dispositivos;
 
     public Empresa(String nomeFantasia, String razaoSocial, String CNPJ, String telefone, String email) {
         this.nomeFantasia = nomeFantasia;
