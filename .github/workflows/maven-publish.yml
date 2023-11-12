@@ -29,8 +29,24 @@ jobs:
     - name: Build with Maven
       run: mvn assembly:single
 
-    - name: Upload JAR as artifact
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.sha | slice(0, 8) }}
+        body: |
+          Release
+
+    - name: Upload Release Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: login-java-netminder-1.1
-        path: firebyte.jar
+        name: my-artifact
+        path: target/firebyte.jar
+
+    - name: Deploy
+      uses: actions/deploy-releases@v1
+      with:
+        api-key: ${{ secrets.GITHUB_TOKEN }}
+        file: target/firebyte.jar
+        release: ${{ steps.create_release.outputs.id }}
