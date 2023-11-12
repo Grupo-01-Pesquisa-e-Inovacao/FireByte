@@ -16,7 +16,9 @@ import java.util.logging.Logger;
 public class App {
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
-        BDInterface bdInterface = new BDInterface();
+
+        BDInterface productionDatabase = new BDInterface(System.getenv("localhost:3306"), System.getenv("firebyte"), System.getenv("1234"));
+        BDInterface localDatabase = new BDInterface(System.getenv("localhost:3306"), System.getenv("firebyte"), System.getenv("1234"));
         SystemMonitor systemMonitor = new SystemMonitor();
 
         System.out.println("===========================================");
@@ -36,7 +38,7 @@ public class App {
             String emailUsuario = scanner.nextLine();
             System.out.println("Digite sua Senha:");
             String senhaUsuario = scanner.nextLine();
-            user = bdInterface.getUser(emailUsuario, senhaUsuario);
+            user = productionDatabase.getUser(emailUsuario, senhaUsuario);
 
             if (user != null) {
                 System.out.println("Precisamos provar sua identidade.");
@@ -59,7 +61,7 @@ public class App {
         }
 
         //PEGAR DISPOSITIVO
-        Dispositivo dispositivo = bdInterface.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa()); //Validar se o dispositivo já está cadastrado (se não está cria um novo)
+        Dispositivo dispositivo = productionDatabase.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa()); //Validar se o dispositivo já está cadastrado (se não está cria um novo)
         //PEGAR COMPONENTES DO DISPOSITIVO
         ComponentesDispositivos CPU = BDInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
         ComponentesDispositivos DISK = BDInterface.returnComponenteDispositivo("DISK", dispositivo.getEnderecoMAC());
@@ -76,22 +78,22 @@ public class App {
             LocalDateTime dataHoraCaptura = LocalDateTime.now();
 
             if (CPU != null) {
-                logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
+                logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura, localDatabase, productionDatabase);
                 PrintArchiveLog(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
             }
 
             if (DISK != null) {
-                logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
+                logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura, localDatabase, productionDatabase);
                 PrintArchiveLog(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
             }
 
             if (RAM != null) {
-                logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
+                logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura, localDatabase, productionDatabase);
                 PrintArchiveLog(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
             }
 
             if (REDE != null){
-                logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura, localDatabase, productionDatabase);
                 PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
             }
 
@@ -146,9 +148,9 @@ public class App {
         gravador.close();
     }
 
-    static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
-        BDInterface bdInterface = new BDInterface();
-        bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
+    static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora, BDInterface localDatabase, BDInterface productionDatabase) {
+        //localDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
+        productionDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
         System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
     }
 }

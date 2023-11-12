@@ -7,10 +7,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
 
-public class BDInterface {
+public class BDInterface extends BDConnector{
     //DataBase
-    static BDConnector conexao = new BDConnector();
-    static JdbcTemplate con = conexao.getBdConection();
+    static BDConnector conexao;
+    static JdbcTemplate con;
+
+    public BDInterface(String databaseUrl, String databaseUser, String databasePassword) {
+        super(databaseUrl, databaseUser, databasePassword);
+        conexao = new BDConnector(databaseUrl, databaseUser, databasePassword);
+        con = conexao.getBdConection();
+    }
 
     User getUser(String emailUsuario, String senhaUsuario) {
         try{

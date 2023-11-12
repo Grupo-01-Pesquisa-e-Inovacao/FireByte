@@ -4,7 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class BDConnector {
     private JdbcTemplate bdConection;
 
-    public BDConnector() {
+    public BDConnector(String databaseUrl,String databaseUser, String databasePassword) {
         DotEnv dotEnv = new DotEnv();
 
         BasicDataSource dataSource = new BasicDataSource();
@@ -17,10 +17,10 @@ public class BDConnector {
         //MYSQL -> jdbc:mysql://localhost:3306/mydb
         //SQL SERVER -> jdbc:sqlserver://localhost:1433;database=mydb
         // H2- > jdbc:h2:file:./mydb
-        dataSource.setUrl("jdbc:mysql://localhost:3306/firebyteDB");
+        dataSource.setUrl(databaseUrl);
 
-        dataSource.setUsername("firebyte");
-        dataSource.setPassword("1234");
+        dataSource.setUsername(databaseUser);
+        dataSource.setPassword(databasePassword);
 
         bdConection = new JdbcTemplate(dataSource);
     }
