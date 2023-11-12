@@ -20,8 +20,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        server-id: github
+        settings-path: ${{ github.workspace }}
         
     - name: Install dependencies
       run: mvn install
@@ -34,7 +34,7 @@ jobs:
       uses: actions/create-release@v1
       with:
         tag_name: ${{ github.sha }}
-        release_name: Release ${{ github.sha | slice(0, 8) }}
+        release_name: Release ${{ format('Release {0}', github.sha[0:8]) }}
         body: |
           Release
 
