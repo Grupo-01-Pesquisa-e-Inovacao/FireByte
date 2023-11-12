@@ -68,4 +68,24 @@ public class BDInterface extends BDConnector{
         con.update("INSERT INTO log (fkcomponenteDispositivo, dataHora, captura) VALUES (?, ?, ?)",
                 fkcomponenteDispositivo, dataHora, captura);
     }
+
+    static boolean DispositivoIsActive(String endMAC){
+        try{
+            //Retorna o usuário e a empresa dele
+            Dispositivo dispositivo = con.queryForObject(
+                    "SELECT ativo FROM dispositivo WHERE enderecoMAC = ?",
+                    new BeanPropertyRowMapper<>(Dispositivo.class),
+                    endMAC
+            );
+            assert dispositivo != null;
+            return dispositivo.getAtivo();
+        }catch(EmptyResultDataAccessException e){
+            //Retorna true por segurança
+            return true;
+        }
+    }
+
+    static void ActiveDispositivo(String endMAC){
+        con.update("UPDATE dispositivo SET ativo = true");
+    }
 }

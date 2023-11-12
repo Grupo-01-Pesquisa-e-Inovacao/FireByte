@@ -1,7 +1,5 @@
 import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
-import com.slack.api.model.Conversation;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -10,7 +8,7 @@ public class SlackIntegration {
         var client = Slack.getInstance().methods();
         try {
             var result = client.chatPostMessage(r -> r
-                .token("xoxb-6182782987507-6182807909619-sAmbhYu2bkWyj7L0OHNlTujp")
+                .token("infelizmente não posso colocar aqui")
                 .channel(id)
                 .text(text)
             );

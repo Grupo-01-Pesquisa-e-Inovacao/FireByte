@@ -12,6 +12,8 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class App {
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
@@ -72,6 +74,10 @@ public class App {
             System.out.println("Vimos que seu dispositivo ainda não está configurado,\n você pode configura-lo em nossa Dashboard!");
             System.exit(1);
         }
+
+        //RESTART CHECK
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new RestartCheck(productionDatabase, dispositivo.getEnderecoMAC(), systemMonitor.getOperationSystem()), 0, 10000);
 
         //MONITORAMENTO
         while (true) {
@@ -164,5 +170,38 @@ public class App {
         //localDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
         productionDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
         System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
+    }
+
+    //Restart Feature
+    static class RestartCheck extends TimerTask {
+        BDInterface productionDatabase;
+        String endMAC;
+        String operationSystem;
+
+        public RestartCheck(BDInterface productionDatabase, String endMAC, String operationSystem) {
+            this.productionDatabase = productionDatabase;
+            this.endMAC = endMAC;
+            this.operationSystem = operationSystem;
+        }
+
+        @Override
+        public void run() {
+            if(!productionDatabase.DispositivoIsActive(endMAC)){
+                if(operationSystem.contains("windows")){
+                    try {
+                        Runtime.getRuntime().exec("Shutdown -r");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else{
+                    try {
+                        Runtime.getRuntime().exec("reboot");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                productionDatabase.ActiveDispositivo(endMAC);
+            }
+        }
     }
 }
