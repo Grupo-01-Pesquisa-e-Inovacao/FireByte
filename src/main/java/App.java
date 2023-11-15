@@ -2,6 +2,8 @@ import entities.ComponentesDispositivos;
 import entities.Dispositivo;
 import entities.User;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -10,6 +12,8 @@ import java.util.logging.Logger;
 
 public class App {
     private static final AtomicBoolean isPaused = new AtomicBoolean(false);
+
+    private static final String LOG_FILE_PATH = "firebyte_log.txt";
 
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
@@ -21,11 +25,9 @@ public class App {
         System.out.println("Este é o sistema de monitoramento FireByte!");
         System.out.println("===========================================");
 
-        //Desabilitar Warnings do Oshi
         Logger oshiLogger = Logger.getLogger("oshi.util.platform.windows.PerfCounterWildcardQuery");
         oshiLogger.setLevel(Level.SEVERE);
 
-        // LOGIN
         User user = null;
         boolean loginSucesso = false;
         while (!loginSucesso) {
@@ -37,42 +39,41 @@ public class App {
             user = bdInterface.getUser(emailUsuario, senhaUsuario);
             if (user != null) {
                 loginSucesso = true;
+                logAction(systemMonitor, "Login", "Login realizado com sucesso!");
                 System.out.println("Login realizado com sucesso!");
             } else {
+                logAction(systemMonitor, "Login", "Tentativa de login falhou para o email: " + emailUsuario);
                 System.out.println("Login não encontrado. Tente novamente.");
             }
         }
 
-        //PEGAR DISPOSITIVO
         Dispositivo dispositivo = bdInterface.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa());
-        //PEGAR COMPONENTES DO DISPOSITIVO
-        ComponentesDispositivos CPU = BDInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
-        ComponentesDispositivos DISK = BDInterface.returnComponenteDispositivo("DISK", dispositivo.getEnderecoMAC());
-        ComponentesDispositivos RAM = BDInterface.returnComponenteDispositivo("RAM", dispositivo.getEnderecoMAC());
-        ComponentesDispositivos REDE = BDInterface.returnComponenteDispositivo("REDE", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos CPU = bdInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos DISK = bdInterface.returnComponenteDispositivo("DISK", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos RAM = bdInterface.returnComponenteDispositivo("RAM", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos REDE = bdInterface.returnComponenteDispositivo("REDE", dispositivo.getEnderecoMAC());
 
-        //VERIFICAR CONFIGURAÇÃO
-        if(CPU == null && DISK == null && RAM == null && REDE == null || dispositivo.getTaxaAtualizacao() == null){
+        if (CPU == null && DISK == null && RAM == null && REDE == null || dispositivo.getTaxaAtualizacao() == null) {
             System.out.println("Vimos que seu dispositivo ainda não está configurado,\n você pode configura-lo em nossa Dashboard!");
             System.exit(1);
         }
 
-        // Iniciar thread para monitorar entrada do usuário
         new Thread(() -> {
             while (true) {
                 System.out.println("Digite 'p' para pausar ou 'r' para retomar:");
                 char input = scanner.next().charAt(0);
                 if (input == 'p') {
+                    logAction(systemMonitor, "Pause", "Monitoramento pausado.");
                     isPaused.set(true);
                     System.out.println("Pausado.");
                 } else if (input == 'r') {
+                    logAction(systemMonitor, "Resume", "Monitoramento retomado.");
                     isPaused.set(false);
                     System.out.println("Retomado.");
                 }
             }
         }).start();
 
-        //MONITORAMENTO
         while (true) {
             if (!isPaused.get()) {
                 LocalDateTime dataHoraCaptura = LocalDateTime.now();
@@ -89,7 +90,7 @@ public class App {
                     logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
                 }
 
-                if (REDE != null){
+                if (REDE != null) {
                     logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
                 }
 
@@ -98,9 +99,19 @@ public class App {
         }
     }
 
+    static void logAction(SystemMonitor systemMonitor, String action, String message) {
+        try (FileWriter writer = new FileWriter(LOG_FILE_PATH, true)) {
+            String logEntry = String.format("%s - MAC: %s - Local: %s - Ação: %s - Mensagem: %s%n",
+                    LocalDateTime.now(), systemMonitor.getMACAddress(), "LocalDoDispositivo", action, message);
+            writer.write(logEntry);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
         BDInterface bdInterface = new BDInterface();
         bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
-        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
+        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!", dataHora, fkcomponenteDispositivo, captura));
     }
 }

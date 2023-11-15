@@ -1,0 +1,16 @@
+2023-11-15T18:08:09.752219800 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause
+2023-11-15T18:08:15.361329200 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Resume
+2023-11-15T18:08:16.914506700 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause
+2023-11-15T18:43:46.526160900 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause
+2023-11-15T18:43:54.610276600 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Resume
+2023-11-15T18:43:59.149864500 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause
+2023-11-15T18:49:17.350556300 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Login - Mensagem: Login realizado com sucesso!
+2023-11-15T18:49:21.563558400 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause - Mensagem: Monitoramento pausado.
+2023-11-15T18:49:25.500554 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Resume - Mensagem: Monitoramento retomado.
+2023-11-15T18:49:27.307703300 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause - Mensagem: Monitoramento pausado.
+2023-11-15T19:46:38.587315100 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Login - Mensagem: Login realizado com sucesso!
+2023-11-15T19:46:43.350427900 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause - Mensagem: Monitoramento pausado.
+2023-11-15T19:47:37.301932400 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Resume - Mensagem: Monitoramento retomado.
+2023-11-15T19:47:41.965133 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause - Mensagem: Monitoramento pausado.
+2023-11-15T19:48:04.775311 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Resume - Mensagem: Monitoramento retomado.
+2023-11-15T19:48:06.691152 - MAC: 64:32:a8:83:e3:80 - Local: LocalDoDispositivo - Ação: Pause - Mensagem: Monitoramento pausado.
