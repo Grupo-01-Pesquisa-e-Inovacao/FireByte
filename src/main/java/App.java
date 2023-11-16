@@ -39,7 +39,7 @@ public class App {
             user = bdInterface.getUser(emailUsuario, senhaUsuario);
             if (user != null) {
                 loginSucesso = true;
-                logAction(systemMonitor, "Login", "Login realizado com sucesso!");
+                logAction(systemMonitor, "Login", "Login realizado com sucesso!", user);
                 System.out.println("Login realizado com sucesso!");
             } else {
                 logAction(systemMonitor, "Login", "Tentativa de login falhou para o email: " + emailUsuario);
@@ -58,16 +58,17 @@ public class App {
             System.exit(1);
         }
 
+        User finalUser = user;
         new Thread(() -> {
             while (true) {
                 System.out.println("Digite 'p' para pausar ou 'r' para retomar:");
                 char input = scanner.next().charAt(0);
                 if (input == 'p') {
-                    logAction(systemMonitor, "Pause", "Monitoramento pausado.");
+                    logAction(systemMonitor, "Pause", "Monitoramento pausado.", finalUser);
                     isPaused.set(true);
                     System.out.println("Pausado.");
                 } else if (input == 'r') {
-                    logAction(systemMonitor, "Resume", "Monitoramento retomado.");
+                    logAction(systemMonitor, "Resume", "Monitoramento retomado.", finalUser);
                     isPaused.set(false);
                     System.out.println("Retomado.");
                 }
@@ -94,7 +95,7 @@ public class App {
                     logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
                 }
 
-                Thread.sleep(dispositivo.getTaxaAtualizacao());
+                Thread.sleep(20 * dispositivo.getTaxaAtualizacao());
             }
         }
     }
@@ -103,6 +104,15 @@ public class App {
         try (FileWriter writer = new FileWriter(LOG_FILE_PATH, true)) {
             String logEntry = String.format("%s - MAC: %s - Local: %s - Ação: %s - Mensagem: %s%n",
                     LocalDateTime.now(), systemMonitor.getMACAddress(), "LocalDoDispositivo", action, message);
+            writer.write(logEntry);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    static void logAction(SystemMonitor systemMonitor, String action, String message, User user) {
+        try (FileWriter writer = new FileWriter(LOG_FILE_PATH, true)) {
+            String logEntry = String.format("%s - MAC: %s - Usuário: %s - Local: %s - Ação: %s - Mensagem: %s%n",
+                    LocalDateTime.now(), systemMonitor.getMACAddress(), user.getEmail(), "LocalDoDispositivo", action, message);
             writer.write(logEntry);
         } catch (IOException e) {
             e.printStackTrace();

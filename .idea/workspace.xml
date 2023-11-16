@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="347d9c5a-ea2a-4861-a323-b3118f134d0d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebyte_log.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
