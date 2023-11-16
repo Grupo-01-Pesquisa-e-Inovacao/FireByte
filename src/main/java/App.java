@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 public class App {
     private static final AtomicBoolean isPaused = new AtomicBoolean(false);
 
-    private static final String LOG_FILE_PATH = "firebyte_log.txt";
+    private static final String USER_LOG_FILE_PATH = "user_actions_log.txt";
+    private static final String COMPONENT_LOG_FILE_PATH = "component_logs.txt";
 
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
@@ -101,7 +102,7 @@ public class App {
     }
 
     static void logAction(SystemMonitor systemMonitor, String action, String message) {
-        try (FileWriter writer = new FileWriter(LOG_FILE_PATH, true)) {
+        try (FileWriter writer = new FileWriter(USER_LOG_FILE_PATH, true)) {
             String logEntry = String.format("%s - MAC: %s - Local: %s - Ação: %s - Mensagem: %s%n",
                     LocalDateTime.now(), systemMonitor.getMACAddress(), "LocalDoDispositivo", action, message);
             writer.write(logEntry);
@@ -109,8 +110,9 @@ public class App {
             e.printStackTrace();
         }
     }
+
     static void logAction(SystemMonitor systemMonitor, String action, String message, User user) {
-        try (FileWriter writer = new FileWriter(LOG_FILE_PATH, true)) {
+        try (FileWriter writer = new FileWriter(USER_LOG_FILE_PATH, true)) {
             String logEntry = String.format("%s - MAC: %s - Usuário: %s - Local: %s - Ação: %s - Mensagem: %s%n",
                     LocalDateTime.now(), systemMonitor.getMACAddress(), user.getEmail(), "LocalDoDispositivo", action, message);
             writer.write(logEntry);
@@ -120,8 +122,12 @@ public class App {
     }
 
     static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
-        BDInterface bdInterface = new BDInterface();
-        bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
-        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!", dataHora, fkcomponenteDispositivo, captura));
+        try (FileWriter writer = new FileWriter(COMPONENT_LOG_FILE_PATH, true)) {
+            String logEntry = String.format("%s: Log de %s (%.0f%%) inserido com sucesso!%n", dataHora, fkcomponenteDispositivo, captura);
+            writer.write(logEntry);
+            System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!", dataHora, fkcomponenteDispositivo, captura));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
