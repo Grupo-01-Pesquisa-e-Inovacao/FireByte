@@ -107,8 +107,8 @@ public class App {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
             String dataHoraFormatada = dataHora.format(formatter);
 
-            String logEntry = String.format("%s - MAC: %s - Local: %s - Ação: %s - Mensagem: %s%n",
-                    dataHoraFormatada, systemMonitor.getMACAddress(), "LocalDoDispositivo", action, message);
+            String logEntry = String.format("%s - MAC: %s - Ação: %s - Mensagem: %s%n",
+                    dataHoraFormatada, systemMonitor.getMACAddress(), action, message);
             writer.write(logEntry);
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,8 +120,8 @@ public class App {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
             String dataHoraFormatada = dataHora.format(formatter);
 
-            String logEntry = String.format("%s - MAC: %s - Usuário: %s - Local: %s - Ação: %s - Mensagem: %s%n",
-                    dataHoraFormatada,systemMonitor.getMACAddress(), user.getEmail(), "LocalDoDispositivo", action, message);
+            String logEntry = String.format("%s - MAC: %s - Usuário: %s - Ação: %s - Mensagem: %s%n",
+                    dataHoraFormatada,systemMonitor.getMACAddress(), user.getEmail(), action, message);
             writer.write(logEntry);
 
         } catch (IOException e) {

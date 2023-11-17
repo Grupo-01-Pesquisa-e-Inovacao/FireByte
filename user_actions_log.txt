@@ -21,3 +21,5 @@
 20231116 21:32:55 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Local: LocalDoDispositivo - Ação: Pause - Mensagem: Monitoramento pausado.
 20231116 21:32:57 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Local: LocalDoDispositivo - Ação: Resume - Mensagem: Monitoramento retomado.
 20231116 21:33:00 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Local: LocalDoDispositivo - Ação: Pause - Mensagem: Monitoramento pausado.
+20231116 21:45:50 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Login - Mensagem: Login realizado com sucesso!
+20231116 21:45:55 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Pause - Mensagem: Monitoramento pausado.
