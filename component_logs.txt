@@ -147,3 +147,43 @@
 2023-11-16T20:44:50.780219400: Log de 6 (0%) inserido com sucesso!
 2023-11-16T20:44:52.127041800: Log de 4 (86%) inserido com sucesso!
 2023-11-16T20:44:52.127041800: Log de 6 (0%) inserido com sucesso!
+20231116 21:03:12: Log de 4 (84%) inserido com sucesso!
+20231116 21:03:12: Log de 6 (0%) inserido com sucesso!
+20231116 21:03:13: Log de 4 (84%) inserido com sucesso!
+20231116 21:03:13: Log de 6 (0%) inserido com sucesso!
+20231116 21:03:15: Log de 4 (84%) inserido com sucesso!
+20231116 21:03:15: Log de 6 (0%) inserido com sucesso!
+20231116 21:04:51: Log de 4 (86%) inserido com sucesso!
+20231116 21:04:51: Log de 6 (0%) inserido com sucesso!
+20231116 21:04:52: Log de 4 (86%) inserido com sucesso!
+20231116 21:04:52: Log de 6 (0%) inserido com sucesso!
+20231116 21:04:53: Log de 4 (86%) inserido com sucesso!
+20231116 21:04:53: Log de 6 (0%) inserido com sucesso!
+20231116 21:04:55: Log de 4 (86%) inserido com sucesso!
+20231116 21:04:55: Log de 6 (0%) inserido com sucesso!
+20231116 21:04:56: Log de 4 (86%) inserido com sucesso!
+20231116 21:04:56: Log de 6 (0%) inserido com sucesso!
+20231116 21:04:57: Log de 4 (86%) inserido com sucesso!
+20231116 21:04:57: Log de 6 (0%) inserido com sucesso!
+20231116 21:06:35: Log de 4 (87%) inserido com sucesso!20231116 21:06:35: Log de 6 (0%) inserido com sucesso!20231116 21:06:37: Log de 4 (87%) inserido com sucesso!20231116 21:06:37: Log de 6 (0%) inserido com sucesso!20231116 21:06:38: Log de 4 (87%) inserido com sucesso!20231116 21:06:38: Log de 6 (0%) inserido com sucesso!20231116 21:06:39: Log de 4 (87%) inserido com sucesso!20231116 21:06:39: Log de 6 (0%) inserido com sucesso!20231116 21:06:42: Log de 4 (88%) inserido com sucesso!20231116 21:06:42: Log de 6 (0%) inserido com sucesso!20231116 21:06:43: Log de 4 (88%) inserido com sucesso!20231116 21:06:43: Log de 6 (0%) inserido com sucesso!20231116 21:10:38: Log de 4 (83%) inserido com sucesso!
+20231116 21:10:38: Log de 6 (0%) inserido com sucesso!
+20231116 21:10:39: Log de 4 (83%) inserido com sucesso!
+20231116 21:10:39: Log de 6 (0%) inserido com sucesso!
+20231116 21:10:41: Log de 4 (83%) inserido com sucesso!
+20231116 21:10:41: Log de 6 (0%) inserido com sucesso!
+20231116 21:10:42: Log de 4 (83%) inserido com sucesso!
+20231116 21:10:42: Log de 6 (0%) inserido com sucesso!
+20231116 21:13:49 Log de 4 (83%) inserido com sucesso!
+20231116 21:13:49 Log de 6 (0%) inserido com sucesso!
+20231116 21:13:50 Log de 4 (83%) inserido com sucesso!
+20231116 21:13:50 Log de 6 (0%) inserido com sucesso!
+20231116 21:32:52 Log de 4 (84%) inserido com sucesso!
+20231116 21:32:52 Log de 6 (0%) inserido com sucesso!
+20231116 21:32:53 Log de 4 (84%) inserido com sucesso!
+20231116 21:32:53 Log de 6 (0%) inserido com sucesso!
+20231116 21:32:55 Log de 4 (84%) inserido com sucesso!
+20231116 21:32:55 Log de 6 (0%) inserido com sucesso!
+20231116 21:32:58 Log de 4 (84%) inserido com sucesso!
+20231116 21:32:58 Log de 6 (0%) inserido com sucesso!
+20231116 21:32:59 Log de 4 (84%) inserido com sucesso!
+20231116 21:32:59 Log de 6 (0%) inserido com sucesso!
