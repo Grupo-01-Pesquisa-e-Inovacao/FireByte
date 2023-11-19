@@ -14,8 +14,9 @@ import java.util.logging.Logger;
 public class App {
     private static final AtomicBoolean isPaused = new AtomicBoolean(false);
 
-    private static final String USER_LOG_FILE_PATH = "user_actions_log.txt";
-    private static final String COMPONENT_LOG_FILE_PATH = "component_logs.txt";
+    private static final String USER_LOG_FILE = "user_actions_log";
+    private static final String COMPONENT_LOG_FILE = "component_logs";
+    private static final String LOG_FILE_EXTENSION = ".txt";
 
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
@@ -102,8 +103,21 @@ public class App {
         }
     }
 
+    static String getUserLogFileName() {
+        return USER_LOG_FILE + "_" + getCurrentDateTime() + LOG_FILE_EXTENSION;
+    }
+
+    static String getComponentLogFileName() {
+        return COMPONENT_LOG_FILE + "_" + getCurrentDateTime() + LOG_FILE_EXTENSION;
+    }
+
+    static String getCurrentDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return LocalDateTime.now().format(formatter);
+    }
+
     static void logAction(SystemMonitor systemMonitor, String action, String message, LocalDateTime dataHora) {
-        try (FileWriter writer = new FileWriter(USER_LOG_FILE_PATH, true)) {
+        try (FileWriter writer = new FileWriter(getUserLogFileName(), true)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
             String dataHoraFormatada = dataHora.format(formatter);
 
@@ -116,7 +130,7 @@ public class App {
     }
 
     static void logAction(SystemMonitor systemMonitor, String action, String message, User user, LocalDateTime dataHora) {
-        try (FileWriter writer = new FileWriter(USER_LOG_FILE_PATH, true)) {
+        try (FileWriter writer = new FileWriter(getUserLogFileName(), true)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
             String dataHoraFormatada = dataHora.format(formatter);
 
@@ -129,7 +143,7 @@ public class App {
         }
     }
     static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
-        try (FileWriter writer = new FileWriter(COMPONENT_LOG_FILE_PATH, true)) {
+        try (FileWriter writer = new FileWriter(getComponentLogFileName(), true)) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
             String dataHoraFormatada = dataHora.format(formatter);

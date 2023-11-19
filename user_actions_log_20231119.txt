@@ -1,0 +1,2 @@
+20231119 00:17:56 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Login - Mensagem: Login realizado com sucesso!
+20231119 00:17:59 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Pause - Mensagem: Monitoramento pausado.
