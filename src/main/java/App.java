@@ -118,7 +118,7 @@ public class App {
 
     static void logAction(SystemMonitor systemMonitor, String action, String message, LocalDateTime dataHora) {
         try (FileWriter writer = new FileWriter(getUserLogFileName(), true)) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss:ms");
             String dataHoraFormatada = dataHora.format(formatter);
 
             String logEntry = String.format("%s - MAC: %s - Ação: %s - Mensagem: %s%n",
@@ -131,7 +131,7 @@ public class App {
 
     static void logAction(SystemMonitor systemMonitor, String action, String message, User user, LocalDateTime dataHora) {
         try (FileWriter writer = new FileWriter(getUserLogFileName(), true)) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss:ms");
             String dataHoraFormatada = dataHora.format(formatter);
 
             String logEntry = String.format("%s - MAC: %s - Usuário: %s - Ação: %s - Mensagem: %s%n",
@@ -145,7 +145,7 @@ public class App {
     static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
         try (FileWriter writer = new FileWriter(getComponentLogFileName(), true)) {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss:ms");
             String dataHoraFormatada = dataHora.format(formatter);
 
             String logEntry = String.format("%s Log de %s (%.0f%%) inserido com sucesso!\n",
