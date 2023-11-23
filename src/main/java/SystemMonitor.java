@@ -7,6 +7,11 @@ import com.github.britooo.looca.api.group.rede.RedeInterface;
 import com.github.britooo.looca.api.group.sistema.Sistema;
 import com.github.britooo.looca.api.group.temperatura.Temperatura;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 public class SystemMonitor {
 
     Looca looca = new Looca();
@@ -58,9 +63,8 @@ public class SystemMonitor {
     }
 
     public double getRedeUsage(){
-        // Retorna um valor entre 0 e 100% representando o package loss da rede
+        // Retorna um valor de 0 a 100% representando quantos % da velocidade de internet está usando (Max 100mbps)
         RedeInterface componenteRede = rede.getGrupoDeInterfaces().getInterfaces().get(0);
-        return componenteRede.getPacotesEnviados() - componenteRede.getPacotesRecebidos();
-        //TODO converter isso pra %
+        return (137887744.0 / componenteRede.getBytesEnviados()) * 100;
     }
 }

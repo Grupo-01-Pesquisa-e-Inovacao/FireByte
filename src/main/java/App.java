@@ -47,6 +47,7 @@ public class App {
                 System.out.println("Enviamos um código de autorização para seu email, coloque-o aqui:");
                 //2FA
                 int authCode = ThreadLocalRandom.current().nextInt(100000, 999999 + 1);
+                System.out.println(authCode);
                 sendAuthEmail(emailUsuario, authCode);
                 while (!loginSucesso){
                     int clientAuthCode = scanner.nextInt();
@@ -66,7 +67,7 @@ public class App {
         Dispositivo dispositivo = productionDatabase.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa()); //Validar se o dispositivo já está cadastrado (se não está cria um novo)
         //PEGAR COMPONENTES DO DISPOSITIVO
         ComponentesDispositivos CPU = BDInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
-        ComponentesDispositivos DISK = BDInterface.returnComponenteDispositivo("DISK", dispositivo.getEnderecoMAC());
+        ComponentesDispositivos DISK = BDInterface.returnComponenteDispositivo("DISCO", dispositivo.getEnderecoMAC());
         ComponentesDispositivos RAM = BDInterface.returnComponenteDispositivo("RAM", dispositivo.getEnderecoMAC());
         ComponentesDispositivos REDE = BDInterface.returnComponenteDispositivo("REDE", dispositivo.getEnderecoMAC());
         //VERIFICAR CONFIGURAÇÃO
