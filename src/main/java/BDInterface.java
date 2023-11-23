@@ -7,16 +7,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
 
-public class BDInterface {
+public class BDInterface extends BDConnector{
     //DataBase
-    static BDConnector conexao = new BDConnector();
-    static JdbcTemplate con = conexao.getBdConection();
+    static BDConnector conexao;
+    static JdbcTemplate con;
+
+    public BDInterface(String databaseUrl, String databaseUser, String databasePassword) {
+        super(databaseUrl, databaseUser, databasePassword);
+        conexao = new BDConnector(databaseUrl, databaseUser, databasePassword);
+        con = conexao.getBdConection();
+    }
 
     User getUser(String emailUsuario, String senhaUsuario) {
         try{
             //Retorna o usuário e a empresa dele
             User user = con.queryForObject(
-                    "SELECT * FROM Usuario WHERE email = ? AND senha = ?",
+                    "SELECT * FROM usuario WHERE email = ? AND senha = ?",
                     new BeanPropertyRowMapper<>(User.class),
                     emailUsuario,
                     senhaUsuario
@@ -61,5 +67,25 @@ public class BDInterface {
     void insertLog(Integer fkcomponenteDispositivo, LocalDateTime dataHora, Double captura){
         con.update("INSERT INTO log (fkcomponenteDispositivo, dataHora, captura) VALUES (?, ?, ?)",
                 fkcomponenteDispositivo, dataHora, captura);
+    }
+
+    static boolean DispositivoIsActive(String endMAC){
+        try{
+            //Retorna o usuário e a empresa dele
+            Dispositivo dispositivo = con.queryForObject(
+                    "SELECT ativo FROM dispositivo WHERE enderecoMAC = ?",
+                    new BeanPropertyRowMapper<>(Dispositivo.class),
+                    endMAC
+            );
+            assert dispositivo != null;
+            return dispositivo.getAtivo();
+        }catch(EmptyResultDataAccessException e){
+            //Retorna true por segurança
+            return true;
+        }
+    }
+
+    static void ActiveDispositivo(String endMAC){
+        con.update("UPDATE dispositivo SET ativo = true");
     }
 }
