@@ -1,0 +1,8 @@
+20231122 10:06:22 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Login - Mensagem: Login realizado com sucesso!
+20231122 10:06:26 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Pause - Mensagem: Monitoramento pausado.
+20231122 10:09:49:949 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Login - Mensagem: Login realizado com sucesso!
+20231122 10:09:53:953 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Pause - Mensagem: Monitoramento pausado.
+20231122 10:09:56:956 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Resume - Mensagem: Monitoramento retomado.
+20231122 10:10:00:100 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Pause - Mensagem: Monitoramento pausado.
+20231122 10:11:58:1158 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Login - Mensagem: Login realizado com sucesso!
+20231122 10:11:59:1159 - MAC: 64:32:a8:83:e3:80 - Usuário: pedro@netminder.com - Ação: Pause - Mensagem: Monitoramento pausado.

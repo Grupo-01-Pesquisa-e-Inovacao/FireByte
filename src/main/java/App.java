@@ -1,6 +1,8 @@
 import entities.ComponentesDispositivos;
 import entities.Dispositivo;
 import entities.User;
+import java.io.FileWriter;
+import java.io.IOException;
 import org.simplejavamail.api.email.Email;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.api.mailer.config.TransportStrategy;
@@ -8,7 +10,9 @@ import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 import java.io.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +20,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class App {
+    private static final AtomicBoolean isPaused = new AtomicBoolean(false);
+
+    private static final String USER_LOG_FILE = "user_actions_log";
+    private static final String COMPONENT_LOG_FILE = "component_logs";
+    private static final String LOG_FILE_EXTENSION = ".txt";
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
@@ -28,11 +37,9 @@ public class App {
         System.out.println("Este é o sistema de monitoramento FireByte!");
         System.out.println("===========================================");
 
-        //Desabilitar Warnings do Oshi
         Logger oshiLogger = Logger.getLogger("oshi.util.platform.windows.PerfCounterWildcardQuery");
         oshiLogger.setLevel(Level.SEVERE);
 
-        // LOGIN
         User user = null;
         boolean loginSucesso = false;
         while (!loginSucesso) {
@@ -54,11 +61,13 @@ public class App {
                     if(clientAuthCode == authCode){
                         System.out.println("Login Realizado com Sucesso!");
                         loginSucesso = true;
+                        logAction(systemMonitor, "Login", "Login realizado com sucesso!", user, LocalDateTime.now());
                     }else{
                         System.out.println("Código inválido!\nInsira o código novamente:");
                     }
                 }
             } else {
+                logAction(systemMonitor, "Login", "Tentativa de login falhou para o email: " + emailUsuario, LocalDateTime.now());
                 System.out.println("Login não encontrado. Tente novamente.");
             }
         }
@@ -76,50 +85,122 @@ public class App {
             System.exit(1);
         }
 
+        User finalUser = user;
+        new Thread(() -> {
+            while (true) {
+                System.out.println("Digite 'p' para pausar ou 'r' para retomar:");
+                char input = scanner.next().charAt(0);
+                if (input == 'p') {
+                    logAction(systemMonitor, "Pause", "Monitoramento pausado.", finalUser, LocalDateTime.now());
+                    isPaused.set(true);
+                    System.out.println("Pausado.");
+                } else if (input == 'r') {
+                    logAction(systemMonitor, "Resume", "Monitoramento retomado.", finalUser, LocalDateTime.now());
+                    isPaused.set(false);
+                    System.out.println("Retomado.");
+                }
+            }
+        }).start();
+
         //RESTART CHECK
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new RestartCheck(productionDatabase, dispositivo.getEnderecoMAC(), systemMonitor.getOperationSystem()), 0, 10000);
 
         //MONITORAMENTO
         while (true) {
-            LocalDateTime dataHoraCaptura = LocalDateTime.now();
+            if (!isPaused.get()) {
+                LocalDateTime dataHoraCaptura = LocalDateTime.now();
+              if (CPU != null) {
+                  InsertLogIntoDatabase(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura, localDatabase, productionDatabase);
+                  PrintArchiveLog(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
+                  LogComponente(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
+                  if(systemMonitor.getCpuUsage() > 80){ //TODO pegar o valor dos parâmetros
+                      SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua CPU está em %.2f%% de uso!", systemMonitor.getCpuUsage()));
+                  }
+              }
 
-            if (CPU != null) {
-                logAndPrint(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura, localDatabase, productionDatabase);
-                PrintArchiveLog(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
-                if(systemMonitor.getCpuUsage() > 80){ //TODO pegar o valor dos parâmetros
-                    SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua CPU está em %.2f%% de uso!", systemMonitor.getCpuUsage()));
-                }
-            }
+              if (DISK != null) {
+                  InsertLogIntoDatabase(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura, localDatabase, productionDatabase);
+                  PrintArchiveLog(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
+                  LogComponente(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
+                  if(systemMonitor.getDiskUsage() > 80){ //TODO pegar o valor dos parâmetros
+                      SlackIntegration.publishMessage("C065CP21H0T", String.format("Seu DISCO está em %.2f%% de uso!", systemMonitor.getDiskUsage()));
+                  }
+              }
 
-            if (DISK != null) {
-                logAndPrint(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura, localDatabase, productionDatabase);
-                PrintArchiveLog(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
-                if(systemMonitor.getDiskUsage() > 80){ //TODO pegar o valor dos parâmetros
-                    SlackIntegration.publishMessage("C065CP21H0T", String.format("Seu DISCO está em %.2f%% de uso!", systemMonitor.getDiskUsage()));
-                }
-            }
+              if (RAM != null) {
+                  InsertLogIntoDatabase(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura, localDatabase, productionDatabase);
+                  PrintArchiveLog(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
+                  LogComponente(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
+                  if(systemMonitor.getRamUsage() > 80){ //TODO pegar o valor dos parâmetros
+                      SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua RAM está em %.2f%% de uso!", systemMonitor.getRamUsage()));
+                  }
+              }
 
-            if (RAM != null) {
-                logAndPrint(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura, localDatabase, productionDatabase);
-                PrintArchiveLog(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
-                if(systemMonitor.getRamUsage() > 80){ //TODO pegar o valor dos parâmetros
-                    SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua RAM está em %.2f%% de uso!", systemMonitor.getRamUsage()));
-                }
-            }
+              if (REDE != null){
+                  InsertLogIntoDatabase(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura, localDatabase, productionDatabase);
+                  PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                  LogComponente(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
+                  if(systemMonitor.getRedeUsage() > 80){ //TODO pegar o valor dos parâmetros
+                      SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua REDE está em %.2f%% de uso!", systemMonitor.getRedeUsage()));
+                  }
+              }
+          }
+    }
 
-            if (REDE != null){
-                logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura, localDatabase, productionDatabase);
-                PrintArchiveLog(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
-                if(systemMonitor.getRedeUsage() > 80){ //TODO pegar o valor dos parâmetros
-                    SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua REDE está em %.2f%% de uso!", systemMonitor.getRedeUsage()));
-                }
-            }
+    static String getUserLogFileName() {
+        return USER_LOG_FILE + "_" + getCurrentDateTime() + LOG_FILE_EXTENSION;
+    }
 
-            Thread.sleep(dispositivo.getTaxaAtualizacao());
+    static String getComponentLogFileName() {
+        return COMPONENT_LOG_FILE + "_" + getCurrentDateTime() + LOG_FILE_EXTENSION;
+    }
+
+    static String getCurrentDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return LocalDateTime.now().format(formatter);
+    }
+
+    static void logAction(SystemMonitor systemMonitor, String action, String message, LocalDateTime dataHora) {
+        try (FileWriter writer = new FileWriter(getUserLogFileName(), true)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss:ms");
+            String dataHoraFormatada = dataHora.format(formatter);
+
+            String logEntry = String.format("%s - MAC: %s - Ação: %s - Mensagem: %s%n",
+                    dataHoraFormatada, systemMonitor.getMACAddress(), action, message);
+            writer.write(logEntry);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
+    static void logAction(SystemMonitor systemMonitor, String action, String message, User user, LocalDateTime dataHora) {
+        try (FileWriter writer = new FileWriter(getUserLogFileName(), true)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss:ms");
+            String dataHoraFormatada = dataHora.format(formatter);
+
+            String logEntry = String.format("%s - MAC: %s - Usuário: %s - Ação: %s - Mensagem: %s%n",
+                    dataHoraFormatada,systemMonitor.getMACAddress(), user.getEmail(), action, message);
+            writer.write(logEntry);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    static void LogComponente(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
+        try (FileWriter writer = new FileWriter(getComponentLogFileName(), true)) {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss:ms");
+            String dataHoraFormatada = dataHora.format(formatter);
+
+            String logEntry = String.format("%s Log de %s (%.0f%%) inserido com sucesso!\n",
+                    dataHoraFormatada, fkcomponenteDispositivo, captura);
+
+            System.out.print(logEntry);
+            writer.write(logEntry);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     //2FA
     static void sendAuthEmail(String clientEmail, int authCode){
         Email email = EmailBuilder.startingBlank()
@@ -167,7 +248,7 @@ public class App {
         gravador.close();
     }
 
-    static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora, BDInterface localDatabase, BDInterface productionDatabase) {
+    static void InsertLogIntoDatabase(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora, BDInterface localDatabase, BDInterface productionDatabase) {
         //localDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
         productionDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
         System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
