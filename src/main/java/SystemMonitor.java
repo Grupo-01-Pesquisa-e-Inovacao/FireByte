@@ -62,9 +62,17 @@ public class SystemMonitor {
         return temperatura.getTemperatura();
     }
 
-    public double getRedeUsage(){
+    public double getRedeUsage() {
         // Retorna um valor de 0 a 100% representando quantos % da velocidade de internet está usando (Max 100mbps)
         RedeInterface componenteRede = rede.getGrupoDeInterfaces().getInterfaces().get(0);
-        return (137887744.0 / componenteRede.getBytesEnviados()) * 100;
+
+        long bytesEnviados = componenteRede.getBytesEnviados();
+
+        if (bytesEnviados != 0) {
+            return (137887744.0 / bytesEnviados) * 100;
+        } else {
+            return 0.0;
+        }
     }
+
 }
