@@ -74,5 +74,4 @@ public class SystemMonitor {
             return 0.0;
         }
     }
-
 }

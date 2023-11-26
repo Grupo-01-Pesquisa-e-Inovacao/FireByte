@@ -12,9 +12,9 @@ public class BDInterface extends BDConnector{
     static BDConnector conexao;
     static JdbcTemplate con;
 
-    public BDInterface(String databaseUrl, String databaseUser, String databasePassword) {
-        super(databaseUrl, databaseUser, databasePassword);
-        conexao = new BDConnector(databaseUrl, databaseUser, databasePassword);
+    public BDInterface(String databaseUrl, Integer databasePort, String databaseUser, String databasePassword) {
+        super(databaseUrl, databasePort, databaseUser, databasePassword);
+        conexao = new BDConnector(databaseUrl, databasePort, databaseUser, databasePassword);
         con = conexao.getBdConection();
     }
 

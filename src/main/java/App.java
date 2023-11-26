@@ -25,11 +25,9 @@ public class App {
     private static final String USER_LOG_FILE = "user_actions_log";
     private static final String COMPONENT_LOG_FILE = "component_logs";
     private static final String LOG_FILE_EXTENSION = ".txt";
-    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
+    public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
 
-        BDInterface productionDatabase = new BDInterface("localhost:3306", "firebyte", "1234");
-        BDInterface localDatabase = null;
         SystemMonitor systemMonitor = new SystemMonitor();
 
         System.out.println("===========================================");
@@ -47,6 +45,7 @@ public class App {
             String emailUsuario = scanner.nextLine();
             System.out.println("Digite sua Senha:");
             String senhaUsuario = scanner.nextLine();
+            BDInterface productionDatabase = new BDInterface("44.209.179.217", 1433, "sa", "esqueci@senha");
             user = productionDatabase.getUser(emailUsuario, senhaUsuario);
 
             if (user != null) {
@@ -72,6 +71,7 @@ public class App {
         }
 
         //PEGAR DISPOSITIVO
+        BDInterface productionDatabase = new BDInterface("44.209.179.217", 1433, "sa", "esqueci@senha");
         Dispositivo dispositivo = productionDatabase.getDispositivo(systemMonitor.getMACAddress(), user.getFkEmpresa()); //Validar se o dispositivo já está cadastrado (se não está cria um novo)
         //PEGAR COMPONENTES DO DISPOSITIVO
         ComponentesDispositivos CPU = BDInterface.returnComponenteDispositivo("CPU", dispositivo.getEnderecoMAC());
@@ -110,7 +110,7 @@ public class App {
             if (!isPaused.get()) {
                 LocalDateTime dataHoraCaptura = LocalDateTime.now();
                 if (CPU != null) {
-                    InsertLogIntoDatabase(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura, localDatabase, productionDatabase);
+                    InsertLogIntoDatabase(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
                     LogComponente(CPU.getId(), systemMonitor.getCpuUsage(), dataHoraCaptura);
                     if (systemMonitor.getCpuUsage() > 80) { //TODO pegar o valor dos parâmetros
                         SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua CPU está em %.2f%% de uso!", systemMonitor.getCpuUsage()));
@@ -118,7 +118,7 @@ public class App {
                 }
 
                 if (DISK != null) {
-                    InsertLogIntoDatabase(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura, localDatabase, productionDatabase);
+                    InsertLogIntoDatabase(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
                     LogComponente(DISK.getId(), systemMonitor.getDiskUsage(), dataHoraCaptura);
                     if (systemMonitor.getDiskUsage() > 80) { //TODO pegar o valor dos parâmetros
                         SlackIntegration.publishMessage("C065CP21H0T", String.format("Seu DISCO está em %.2f%% de uso!", systemMonitor.getDiskUsage()));
@@ -126,7 +126,7 @@ public class App {
                 }
 
                 if (RAM != null) {
-                    InsertLogIntoDatabase(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura, localDatabase, productionDatabase);
+                    InsertLogIntoDatabase(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
                     LogComponente(RAM.getId(), systemMonitor.getRamUsage(), dataHoraCaptura);
                     if (systemMonitor.getRamUsage() > 80) { //TODO pegar o valor dos parâmetros
                         SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua RAM está em %.2f%% de uso!", systemMonitor.getRamUsage()));
@@ -135,7 +135,7 @@ public class App {
 
                 if (REDE != null) {
                     System.out.println(systemMonitor.getRedeUsage());
-                    InsertLogIntoDatabase(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura, localDatabase, productionDatabase);
+                    InsertLogIntoDatabase(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
                     LogComponente(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
                     if (systemMonitor.getRedeUsage() > 80) { //TODO pegar o valor dos parâmetros
                         SlackIntegration.publishMessage("C065CP21H0T", String.format("Sua REDE está em %.2f%% de uso!", systemMonitor.getRedeUsage()));
@@ -227,9 +227,11 @@ public class App {
         mailer.sendMail(email);
     }
 
-    static void InsertLogIntoDatabase(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora, BDInterface localDatabase, BDInterface productionDatabase) {
-        //localDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
+    static void InsertLogIntoDatabase(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
+        BDInterface productionDatabase = new BDInterface("44.209.179.217", 1433, "sa", "esqueci@senha");
         productionDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
+        BDInterface localDatabase = new BDInterface("localhost", 3306, "firebyte", "1234");
+        localDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
     }
 
     //Restart Feature
