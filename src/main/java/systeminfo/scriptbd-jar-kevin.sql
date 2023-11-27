@@ -1,4 +1,4 @@
-CREATE DATABASE jar_individual_kevin;
+create DATABASE jar_individual_kevin;
 use jar_individual_kevin;
 CREATE TABLE informacoes_sistema (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -10,4 +10,6 @@ CREATE TABLE informacoes_sistema (
     max_memoria_ram BIGINT,
     informacoes_discos TEXT
 );
+ALTER TABLE informacoes_sistema ADD COLUMN slots_memoria_ram TEXT;
+ALTER TABLE informacoes_sistema ADD COLUMN data_captura TIMESTAMP;
 select * from informacoes_sistema;
