@@ -103,7 +103,7 @@ public class App {
 
         //RESTART CHECK
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new RestartCheck(productionDatabase, dispositivo.getEnderecoMAC(), systemMonitor.getOperationSystem()), 0, 10000);
+        timer.scheduleAtFixedRate(new RestartCheck(productionDatabase, dispositivo.getEnderecoMAC(), systemMonitor.getOperationSystem()), 0, 2000);
 
         //MONITORAMENTO
         while (true) {
@@ -231,7 +231,7 @@ public class App {
         BDInterface productionDatabase = new BDInterface("44.209.179.217", 1433, "sa", "esqueci@senha");
         productionDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
         BDInterface localDatabase = new BDInterface("localhost", 3306, "firebyte", "1234");
-        localDatabase.insertLog(fkcomponenteDispositivo, dataHora, captura);
+        localDatabase.insertLog(1, dataHora, captura);
     }
 
     //Restart Feature
@@ -249,7 +249,8 @@ public class App {
         @Override
         public void run() {
             if(!productionDatabase.DispositivoIsActive(endMAC)){
-                if(operationSystem.contains("windows")){
+                productionDatabase.ActiveDispositivo(endMAC);
+                if(operationSystem.toLowerCase().contains("windows")){
                     try {
                         Runtime.getRuntime().exec("Shutdown -r");
                     } catch (IOException e) {
@@ -262,7 +263,6 @@ public class App {
                         throw new RuntimeException(e);
                     }
                 }
-                productionDatabase.ActiveDispositivo(endMAC);
             }
         }
     }

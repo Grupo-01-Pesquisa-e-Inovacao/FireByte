@@ -86,6 +86,6 @@ public class BDInterface extends BDConnector{
     }
 
     static void ActiveDispositivo(String endMAC){
-        con.update("UPDATE dispositivo SET ativo = true");
+        con.update("UPDATE dispositivo SET ativo = 1");
     }
 }
