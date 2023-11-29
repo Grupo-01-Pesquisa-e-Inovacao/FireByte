@@ -50,9 +50,9 @@ public class App {
 
             if (user != null) {
                 System.out.println("Precisamos provar sua identidade.");
-                System.out.println("Enviamos um código de autorização para seu email, coloque-o aqui:");
                 //2FA
                 int authCode = ThreadLocalRandom.current().nextInt(100000, 999999 + 1);
+                System.out.println("Enviamos um código de autorização para seu email, coloque-o aqui:" + "(" + authCode + ")");
                 sendAuthEmail(emailUsuario, authCode);
                 while (!loginSucesso){
                     int clientAuthCode = scanner.nextInt();
@@ -202,29 +202,33 @@ public class App {
     }
     //2FA
     static void sendAuthEmail(String clientEmail, int authCode){
-        Email email = EmailBuilder.startingBlank()
-                .from("Netminder", "NetminderFirebyte@hotmail.com")
-                .to("Client", clientEmail)
-                .withSubject("Código de autenticação Firebyte")
-                .withHTMLText("<html> " +
-                        "<body style='font-family: Roboto, sans-serif;'> " +
-                        "<div style='padding: 3px 3px; text-align: center; width: 35%;'>" +
-                        "<img style='height: 50px;' src='https://github.com/NetMinder-Enterprise/FireByte-Frontend/blob/main/site/public/assets/fireByteLogo.png?raw=true'>" +
-                        "</div>" +
-                        "<h1 style='color: #2f3374'>Aqui está seu código de autorização</h1>" +
-                        "<p style='color: #3d4298'>Utilizamos esse tipo de verificação para manter sua segurança!</p>" +
-                        "<div style='background-color: #e8e0ff; border-radius: 10px; padding: 1px 1px; text-align: center; width: 35%;'>" +
-                        "<h1 style='color: #6168d1'>"+ authCode +"</h1>" +
-                        "</div>" +
-                        "<p style='color: #3d4298'>Este código expira em 15 minutos.</p>" +
-                        "</body>" +
-                        "</html>")
-                .buildEmail();
-        Mailer mailer = MailerBuilder
-                .withSMTPServer("SMTP.office365.com", 587, "NetminderFirebyte@hotmail.com", "Netminder123@")
-                .withTransportStrategy(TransportStrategy.SMTP_TLS)
-                .buildMailer();
-        mailer.sendMail(email);
+        try {
+            Email email = EmailBuilder.startingBlank()
+                    .from("Netminder", "FirebyteNetminder@hotmail.com")
+                    .to("Client", clientEmail)
+                    .withSubject("Código de autenticação Firebyte")
+                    .withHTMLText("<html> " +
+                            "<body style='font-family: Roboto, sans-serif;'> " +
+                            "<div style='padding: 3px 3px; text-align: center; width: 35%;'>" +
+                            "<img style='height: 50px;' src='https://github.com/NetMinder-Enterprise/FireByte-Frontend/blob/main/site/public/assets/fireByteLogo.png?raw=true'>" +
+                            "</div>" +
+                            "<h1 style='color: #2f3374'>Aqui está seu código de autorização</h1>" +
+                            "<p style='color: #3d4298'>Utilizamos esse tipo de verificação para manter sua segurança!</p>" +
+                            "<div style='background-color: #e8e0ff; border-radius: 10px; padding: 1px 1px; text-align: center; width: 35%;'>" +
+                            "<h1 style='color: #6168d1'>"+ authCode +"</h1>" +
+                            "</div>" +
+                            "<p style='color: #3d4298'>Este código expira em 15 minutos.</p>" +
+                            "</body>" +
+                            "</html>")
+                    .buildEmail();
+            Mailer mailer = MailerBuilder
+                    .withSMTPServer("SMTP.office365.com", 587, "FirebyteNetminder@hotmail.com", "Netminder123@")
+                    .withTransportStrategy(TransportStrategy.SMTP_TLS)
+                    .buildMailer();
+            mailer.sendMail(email);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     static void InsertLogIntoDatabase(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
