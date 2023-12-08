@@ -1,8 +1,10 @@
+import com.github.britooo.looca.api.group.dispositivos.DispositivoUsb;
 import entities.ComponentesDispositivos;
 import entities.Dispositivo;
 import entities.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +50,6 @@ public class App {
         ComponentesDispositivos RAM = BDInterface.returnComponenteDispositivo("RAM", dispositivo.getEnderecoMAC());
         ComponentesDispositivos REDE = BDInterface.returnComponenteDispositivo("REDE", dispositivo.getEnderecoMAC());
         ComponentesDispositivos USBDISPONIVEIS = BDInterface.returnComponenteDispositivo("USBDISPONIVEIS", dispositivo.getEnderecoMAC());
-        ComponentesDispositivos USBCONECTADOS = BDInterface.returnComponenteDispositivo("USBCONECTADOS", dispositivo.getEnderecoMAC());
         //VERIFICAR CONFIGURAÇÃO
         if(CPU == null && DISK == null && RAM == null && REDE == null || dispositivo.getTaxaAtualizacao() == null){
             System.out.println("Vimos que seu dispositivo ainda não está configurado,\n você pode configura-lo em nossa Dashboard!");
@@ -74,25 +75,26 @@ public class App {
             if (REDE != null){
                 logAndPrint(REDE.getId(), systemMonitor.getRedeUsage(), dataHoraCaptura);
             }
-            if (USBCONECTADOS != null){
-                logAndPrint(USBCONECTADOS.getId(), systemMonitor.grupoDeDispositivosUsb.size(), dataHoraCaptura);
-            }
+
             if (USBDISPONIVEIS != null){
-                logAndPrint(USBDISPONIVEIS.getId(), systemMonitor.quantidadeDispositivosUsbTotal - systemMonitor.grupoDeDispositivosUsb.size(), dataHoraCaptura);
+                inserirUSB(USBDISPONIVEIS.getId(), systemMonitor.getQuantidadeDispositivosConectados() );
             }
 
             Thread.sleep(dispositivo.getTaxaAtualizacao());
         }
     }
 
+      static void inserirUSB(Integer id, List<DispositivoUsb> quantidadeDispositivosConectados) {
+        BDInterface bdInterface = new BDInterface();
+        bdInterface.inserirUSB(id , quantidadeDispositivosConectados.toString());
+        System.out.println(String.format("Informações usb: ", id, quantidadeDispositivosConectados ));
+    }
+
+
     static void logAndPrint(Integer fkcomponenteDispositivo, Double captura, LocalDateTime dataHora) {
         BDInterface bdInterface = new BDInterface();
         bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
         System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
     }
-    static void logAndPrint(Integer fkcomponenteDispositivo, Integer captura, LocalDateTime dataHora) {
-        BDInterface bdInterface = new BDInterface();
-        bdInterface.insertLog(fkcomponenteDispositivo, dataHora, captura);
-        System.out.println(String.format("%s: Log de %s (%.0f%%) inserido com sucesso!",dataHora, fkcomponenteDispositivo, captura));
-    }
+
 }

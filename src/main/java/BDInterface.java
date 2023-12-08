@@ -63,8 +63,8 @@ public class BDInterface {
                 fkcomponenteDispositivo, dataHora, captura);
     }
 
-    void insertLog(Integer fkcomponenteDispositivo, LocalDateTime dataHora, Integer captura){
-        con.update("INSERT INTO log (fkcomponenteDispositivo, dataHora, captura) VALUES (?, ?, ?)",
-                fkcomponenteDispositivo, dataHora, captura);
+    void inserirUSB(Integer idUSB, String informacoesUSB ){
+        con.update("INSERT INTO USB (idUSB, informacoes_usb) VALUES (?, ?)",
+                idUSB, informacoesUSB);
     }
 }

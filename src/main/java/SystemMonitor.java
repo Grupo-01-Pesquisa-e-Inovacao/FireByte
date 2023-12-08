@@ -1,7 +1,6 @@
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.dispositivos.DispositivoUsb;
-import com.github.britooo.looca.api.group.dispositivos.DispositivosUsbGrupo;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
 import com.github.britooo.looca.api.group.rede.Rede;
@@ -19,9 +18,8 @@ public class SystemMonitor {
     Memoria memoria = looca.getMemoria();
     Temperatura temperatura = looca.getTemperatura();
     DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
-    List<DispositivoUsb> grupoDeDispositivosUsb = looca.getDispositivosUsbGrupo().getDispositivosUsbConectados();
-
-    Integer quantidadeDispositivosUsbTotal = looca.getDispositivosUsbGrupo().getTotalDispositvosUsb();
+    //List<DispositivoUsb> grupoDeDispositivosUsb = looca.getDispositivosUsbGrupo().getDispositivosUsbConectados();
+    List<DispositivoUsb> quantidadeDispositivosConectados = looca.getDispositivosUsbGrupo().getDispositivosUsb();
     Sistema sistema = looca.getSistema();
 
     public String getOperationSystem() {
@@ -70,16 +68,17 @@ public class SystemMonitor {
         return componenteRede.getPacotesEnviados() - componenteRede.getPacotesRecebidos();
     }
 
-    public List<DispositivoUsb> getGrupoDeDispositivosUsb() {
+    //public List<DispositivoUsb> getGrupoDeDispositivosUsb() {
         //
-        return grupoDeDispositivosUsb;
-    }
+     //   return grupoDeDispositivosUsb;
+   // }
 
-    public void setGrupoDeDispositivosUsb(List<DispositivoUsb> grupoDeDispositivosUsb) {
-        this.grupoDeDispositivosUsb = grupoDeDispositivosUsb;
-    }
+   // public void setGrupoDeDispositivosUsb(List<DispositivoUsb> grupoDeDispositivosUsb) {
+     //   this.grupoDeDispositivosUsb = grupoDeDispositivosUsb;
+   // }
 
-    public Integer getQuantidadeDispositivosUsbTotal() {
-        return quantidadeDispositivosUsbTotal;
+    public List<DispositivoUsb> getQuantidadeDispositivosConectados(){
+        return quantidadeDispositivosConectados;
     }
 }
+
